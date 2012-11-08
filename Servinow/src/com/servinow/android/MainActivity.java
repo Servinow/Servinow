@@ -20,6 +20,7 @@ public class MainActivity extends SherlockActivity {
     	 * The first is the one for the ActionBarSherlock library.
     	 * The second if used for the oficial Android API but the API are ""fully"" compatible.
     	 * */
+    	//test
     	getSupportMenuInflater().inflate(R.menu.activity_main, menu);/*Al "menú" correspondiente le pones este menú (activity_main)*/
         return true;
     }
