@@ -3,27 +3,31 @@ package com.servinow.android.domain;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "lineaPedido")
+@DatabaseTable(tableName = "orderLine")
 public class LineaPedido {
 
 	@DatabaseField(generatedId = true)
 	private int id;
 	
+	@DatabaseField(canBeNull = true)
+	private Integer onlineID;
+	
 	@DatabaseField(canBeNull = false)
 	private int cantidad;
 	
 	@DatabaseField(canBeNull = false)
-	private Estado estado;
+	private Estado estado; //It is stored as string automatically in the DB by ORMLite. Great!
 	
-	@DatabaseField(canBeNull = false, foreign = true)
+	@DatabaseField(foreign=true, foreignAutoCreate=true, foreignAutoRefresh=true)
 	private Producto producto;
+	
+	@DatabaseField(foreign=true, foreignAutoCreate=true, foreignAutoRefresh=true)
+	private Pedido order;
 
 	public LineaPedido() {
-		super();
 	}
 
 	public LineaPedido(int cantidad, Estado estado, Producto producto) {
-		super();
 		this.cantidad = cantidad;
 		this.estado = estado;
 		this.producto = producto;

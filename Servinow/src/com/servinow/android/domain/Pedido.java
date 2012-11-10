@@ -1,5 +1,6 @@
 package com.servinow.android.domain;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -8,41 +9,57 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "pedido")
+
+@DatabaseTable(tableName = "order")
 public class Pedido {
 
-	@DatabaseField(generatedId = true)
-	private int id;
+	//Local ID.
+	@DatabaseField(generatedId = true) //AUTOINCREMENT
+	private int id; //localID
+	
+	@DatabaseField(canBeNull = true)
+	private Integer onlineID;
 	
 	@DatabaseField(canBeNull = false)
 	private Date fecha;
 	
-	@DatabaseField(canBeNull = false)
+	@DatabaseField(canBeNull = false, defaultValue="false")
 	private boolean pagado;
 	
-	@DatabaseField(canBeNull = false)
+	@DatabaseField(canBeNull = false, defaultValue="false")
 	private boolean confirmado;
 	
 	@ForeignCollectionField(eager = true) // (eager = false) equivale a lazy
-	private ForeignCollection<LineaPedido> lineas;
+	private Collection<LineaPedido> orderLines;
+	
+	//No getter (or setter) for this.
+	@DatabaseField(foreign=true, foreignAutoCreate=true, foreignAutoRefresh=true)
+	protected Restaurant restaurant;
 
 	public Pedido() {
-		super();
+	}
+	
+	public Pedido(Date fecha){
+		this.fecha = fecha;
+		this.pagado = false;
+		this.confirmado = false;
 	}
 
+	//TODO remove
 	public Pedido(Date fecha, boolean pagado, boolean confirmado,
 			ForeignCollection<LineaPedido> lineas) {
 		super();
 		this.fecha = fecha;
 		this.pagado = pagado;
 		this.confirmado = confirmado;
-		this.lineas = lineas;
+		this.orderLines = lineas;
 	}
 
 	public int getId() {
 		return id;
 	}
 
+	//TODO remove.
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -51,6 +68,7 @@ public class Pedido {
 		return fecha;
 	}
 
+	//TODO remove.
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
@@ -71,18 +89,19 @@ public class Pedido {
 		this.confirmado = confirmado;
 	}
 
-	public ForeignCollection<LineaPedido> getLineas() {
-		return lineas;
+	public Collection<LineaPedido> getLineas() {
+		return orderLines;
 	}
 
-	public void setLineas(ForeignCollection<LineaPedido> lineas) {
-		this.lineas = lineas;
+	//TODO rethink
+	public void setLineas(Collection<LineaPedido> lineas) {
+		this.orderLines = lineas;
 	}
 	
 	public double getTotal() {
 		double total = 0.0;
 		
-		Iterator<LineaPedido> itr = lineas.iterator();
+		Iterator<LineaPedido> itr = orderLines.iterator();
 		while (itr.hasNext()) {
 			LineaPedido lp = itr.next();
 			total += lp.getTotal();
