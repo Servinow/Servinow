@@ -1,26 +1,42 @@
 package com.servinow.android.domain;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
 import android.graphics.drawable.Drawable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
+
+
+/*
+ * TODO ONLY getters.
+ * */
+
+@DatabaseTable(tableName = "category")
 public class Categoria {
 
+	@DatabaseField(id = true)
 	private int id;
+	
+	@DatabaseField(canBeNull = false)
 	private String nombre;
+	
+	@DatabaseField(canBeNull = true)
+	private String urlImage;
+	
+	//TODO remove.
 	private Drawable imagen;
-	private ArrayList<Producto> productos;
+	
+	@ForeignCollectionField(eager = true)
+	private Collection<Producto> products;
+
+	// Requerido por ORMLite
+	@SuppressWarnings("unused")
+	@DatabaseField(foreign=true, foreignAutoCreate=true, foreignAutoRefresh=true)
+	public Restaurant restaurant;
 	
 	public Categoria() {
-		super();
-	}
-
-	public Categoria(String nombre, Drawable imagen,
-			ArrayList<Producto> productos) {
-		super();
-		this.nombre = nombre;
-		this.imagen = imagen;
-		this.productos = productos;
 	}
 
 	public int getId() {
@@ -39,6 +55,14 @@ public class Categoria {
 		this.nombre = nombre;
 	}
 
+	public String getUrlImage() {
+		return urlImage;
+	}
+
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
+	}
+
 	public Drawable getImagen() {
 		return imagen;
 	}
@@ -47,11 +71,11 @@ public class Categoria {
 		this.imagen = imagen;
 	}
 
-	public ArrayList<Producto> getProductos() {
-		return productos;
+	public Collection<Producto> getProducts() {
+		return products;
 	}
 
-	public void setProductos(ArrayList<Producto> productos) {
-		this.productos = productos;
+	public void setProducts(Collection<Producto> products) {
+		this.products = products;
 	}
 }
