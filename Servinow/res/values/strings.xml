@@ -1,5 +1,23 @@
 <resources>
-
+    <string name="lista_pedido_precio_unidad">Precio unidad:</string>
+    <string name="lista_pedido_precio_total">Precio total:</string>
+    <string name="lista_pedido_cantidad">Cantidad: </string>
+    <string name="lista_pedido_button_cancelar">Cancelar</string>
+    <string name="lista_pedido_button_confirmar">Confirmar</string>
+    <string name="lista_pedido_descripcion_imagen">detalle de la imagen</string>
+    <string name="lista_pedido_title">Lista Pedido</string>
+    <string name="lista_pedido_confirm_dialog_message">¿De verdad desea confirmar el pedido?</string>
+    <string name="lista_pedido_confirm_dialog_title">Confirmar pedido</string>
+    <string name="lista_pedido_confirm_button_cancel">Cancel</string>
+    <string name="lista_pedido_confirm_button_ok">"O"k</string>
+    <string name="lista_pedido_cancel_dialog_message">¿De verdad desea cancelar el pedido?</string>
+    <string name="lista_pedido_cancel_dialog_title">Cancelar pedido</string>
+    <string name="lista_pedido_cancel_button_cancel">Cancel</string>
+    <string name="lista_pedido_cancel_button_ok">"O"k</string>
+    <string name="lista_pedido_button_edit">Editar</string>
+    <string name="lista_pedido_button_delete_all">Marcar Todo</string>
+    <string name="lista_pedido_button_delete_cancel">Cancelar</string>
+    <string name="lista_pedido_button_delete_confirm">Borrar</string>
     <string name="app_name">Servinow</string>
     <string name="title_activity_main">Servinow</string>
 	<string name="qrreading_cancel">Cancelar lectura</string>

@@ -28,6 +28,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+			android:name=".ListaPedidoActivity"
+			android:label="@string/lista_pedido_title"
+		>
+		</activity>
+        
         <activity android:name="QRReading"></activity>
     </application>
 

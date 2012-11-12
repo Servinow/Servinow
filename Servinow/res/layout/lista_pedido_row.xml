@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/lista_pedido_row_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/lista_pedido_descripcion_imagen"
+            android:src="@drawable/ic_action_search" />
+
+        <CheckBox
+            android:id="@+id/lista_pedido_row_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/lista_pedido_row_titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             />
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="false" >
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lista_pedido_precio_unidad" />
+
+                <TextView
+                    android:id="@+id/lista_pedido_row_precio_unidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true" >
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lista_pedido_cantidad" />
+
+                <TextView
+                    android:id="@+id/lista_pedido_row_cantidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
