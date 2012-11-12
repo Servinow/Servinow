@@ -5,7 +5,15 @@
 	<string name="qrreading_cancel">Cancelar lectura</string>
 	<string name="mainactivity_qrreading">Leer QR del restaurante</string>
 	<string name="mainactivity_directtorestaurant">Ir directamente a un restaurante (only for DEBUG)</string>
-	<string name="mainactivity_welcome">Bienvenido a Servinow. Lea el código QR de su mesa o busque restaurantes cercanos en nuestro mapa.</string>
+	<string name="mainactivity_welcome">Bienvenido a Servinow. Lea el cÃ³digo QR de su mesa o busque restaurantes cercanos en nuestro mapa.</string>
 	<string name="mainactivity_gotomap">Ver restaurantes Servinow cercanos</string>
 
+	<string name="activity_ticket_title">Ticket</string>
+	<string name="activity_ticket_unit_price_label">"Precio unitario: "</string>
+	<string name="activity_ticket_quantity_label">"x"</string>
+	<string name="activity_ticket_menu_back">Volver</string>
+	<string name="activity_ticket_menu_pay">Pagar</string>
+	<string name="activity_ticket_subtotal">Sub total: %1$d€</string>
+	<string name="activity_ticket_tax">IVA(%1$d%%): %2$d€</string>
+	<string name="activity_ticket_total">Total: %1$d€</string>
 </resources>

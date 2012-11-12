@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_margin="2dp"
+	android:orientation="vertical" >
+
+    <ListView
+    	android:id="@android:id/list"
+    	android:layout_width="match_parent"
+    	android:layout_height="0dip"
+    	android:layout_weight="1" >
+
+    </ListView>
+
+    <TextView
+    	android:id="@+id/activity_ticket_textViewSubTotal"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:gravity="right"
+    	android:text="@string/activity_ticket_subtotal"
+    	android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+    	android:id="@+id/activity_ticket_textViewTax"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:gravity="right"
+    	android:text="@string/activity_ticket_tax"
+    	android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+    	android:id="@+id/activity_ticket_textViewTotal"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:gravity="right"
+    	android:text="@string/activity_ticket_total"
+    	android:textAppearance="?android:attr/textAppearanceLarge" />
+ 
+</LinearLayout>
