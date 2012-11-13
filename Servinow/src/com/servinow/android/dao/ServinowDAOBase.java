@@ -1,10 +1,9 @@
 package com.servinow.android.dao;
 
+import android.content.Context;
+
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.servinow.android.database.ServinowDatabase;
-import com.servinow.android.domain.Producto;
-
-import android.content.Context;
 
 public abstract class ServinowDAOBase<MainClass, ID> {
 

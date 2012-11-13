@@ -1,20 +1,14 @@
 package com.servinow.android.dao;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.Context;
+
 import com.j256.ormlite.dao.RuntimeExceptionDao;
-import com.j256.ormlite.stmt.PreparedDelete;
-import com.j256.ormlite.stmt.StatementBuilder.StatementType;
-import com.j256.ormlite.support.CompiledStatement;
-import com.j256.ormlite.support.DatabaseConnection;
-import com.j256.ormlite.support.DatabaseResults;
 import com.servinow.android.domain.Categoria;
 import com.servinow.android.domain.Restaurant;
-
-import android.content.Context;
 
 public class CategoryCache extends ServinowDAOBase<Categoria, Integer> {
 
@@ -30,6 +24,13 @@ public class CategoryCache extends ServinowDAOBase<Categoria, Integer> {
 		List<Categoria> categoryList = categoryDAO.queryForFieldValues(sqlFieldsToMatch);
 		
 		return categoryList;
+	}
+
+	public Categoria getCategoria(int categoria_id) {
+		RuntimeExceptionDao<Categoria, Integer> categoryDAO = getDAO();
+		Categoria categoria = categoryDAO.queryForId(categoria_id);
+		
+		return categoria;
 	}
 	
 	void setCategoriesCache(Restaurant restaurant , Collection<Categoria> categoryList){

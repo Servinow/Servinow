@@ -25,7 +25,6 @@
 	<string name="mainactivity_directtorestaurant">Ir directamente a un restaurante (only for DEBUG)</string>
 	<string name="mainactivity_welcome">Bienvenido a Servinow. Lea el código QR de su mesa o busque restaurantes cercanos en nuestro mapa.</string>
 	<string name="mainactivity_gotomap">Ver restaurantes Servinow cercanos</string>
-
 	<string name="activity_ticket_title">Ticket</string>
 	<string name="activity_ticket_unit_price_label">"Precio unitario: "</string>
 	<string name="activity_ticket_quantity_label">"x"</string>
