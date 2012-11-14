@@ -19,7 +19,15 @@
     <string name="lista_pedido_button_delete_cancel">Cancelar</string>
     <string name="lista_pedido_button_delete_confirm">Borrar</string>
     <string name="app_name">Servinow</string>
-    <string name="title_activity_main">Servinow</string>
+    <string name="menu_settings">Settings</string>
+    <string name="paymentmethoddialog_title">Seleccionar método de pago</string>
+    <string name="paymentmethoddialog_normal">Efectivo</string>
+    <string name="paymentmethoddialog_paypal">PayPal</string>
+    <string-array name="paymentmethoddialog">
+       <item>@string/paymentmethoddialog_normal</item>
+       <item>@string/paymentmethoddialog_paypal</item>
+   </string-array>
+	<string name="title_activity_main">Servinow</string>
 	<string name="qrreading_loading">Entregando carta&#8230;</string>
 	<string name="mainactivity_qrreading">Leer QR del restaurante</string>
 	<string name="mainactivity_directtorestaurant">Ir directamente a un restaurante (only for DEBUG)</string>
@@ -33,4 +41,7 @@
 	<string name="activity_ticket_subtotal">Sub total: %1$d€</string>
 	<string name="activity_ticket_tax">IVA(%1$d%%): %2$d€</string>
 	<string name="activity_ticket_total">Total: %1$d€</string>
+	<string name="activity_ticket_normalpaymentinprocess">La cuenta ha sido solicitada. Espere al cobrador para finalizar el pago.</string>
+	<string name="activity_ticket_paymentfailure">El pago no ha sido efectuado con éxito.</string>
+	<string name="activity_ticket_paymentcancelled">Pago cancelado.</string>
 </resources>

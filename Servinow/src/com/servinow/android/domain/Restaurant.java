@@ -19,6 +19,9 @@ public class Restaurant {
 	@DatabaseField(canBeNull = false)
 	private String name;
 	
+	@DatabaseField(canBeNull = true)
+	private String emailPayPalAccount;
+	
 	@DatabaseField(canBeNull = false)
 	private float tax;
 	
@@ -43,6 +46,9 @@ public class Restaurant {
 	}
 	public String getName() {
 		return name;
+	}
+	public String getEmailPayPal() {
+		return emailPayPalAccount;
 	}
 	public Collection<Place> getPlaces() {
 		return places;
