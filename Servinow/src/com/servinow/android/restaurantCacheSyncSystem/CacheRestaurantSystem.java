@@ -34,6 +34,7 @@ public class CacheRestaurantSystem {
 	}
 	
 	public void start(){
+		callbacks.onStartSync();
 		callForRestaurantToCache = new CallForRestaurantToCache();
 		callForRestaurantToCache.execute();
 	}

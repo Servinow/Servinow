@@ -3,7 +3,9 @@ package com.servinow.android;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -15,6 +17,7 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 
 	private QRReadingSystem qrReadingSystem;
 	private CacheRestaurantSystem startRestDEBUG;
+	private View loadingView;
 	
 	//Remove me in the final product START
 	public static enum PARAM {
@@ -29,10 +32,11 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.qrreading);
 		
+		loadingView = findViewById(R.id.QRReading_loading);
+		
 		//Remove me in the final product START
 		Bundle extras = getIntent().getExtras();
 		if(extras != null && extras.getBoolean(PARAM.GOTORESTAURANT.toString(), false)) {
-			//onAnswer(1, 1);
 			startRestDEBUG = new CacheRestaurantSystem(this, 1, 1, this);
 			return;
 		}//Remove me ENDS.
@@ -83,7 +87,14 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 	public void onBadCode() {
 		Toast.makeText(this, "QR erróneo", Toast.LENGTH_LONG).show();
 		
+		loadingView.setVisibility(View.INVISIBLE);
+		
 		qrReadingSystem.releaseCamera();
 		qrReadingSystem.start();
+	}
+
+	@Override
+	public void onStartSync() {
+		loadingView.setVisibility(View.VISIBLE);
 	}
 }

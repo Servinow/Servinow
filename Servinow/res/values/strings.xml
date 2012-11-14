@@ -20,7 +20,7 @@
     <string name="lista_pedido_button_delete_confirm">Borrar</string>
     <string name="app_name">Servinow</string>
     <string name="title_activity_main">Servinow</string>
-	<string name="qrreading_cancel">Cancelar lectura</string>
+	<string name="qrreading_loading">Entregando carta&#8230;</string>
 	<string name="mainactivity_qrreading">Leer QR del restaurante</string>
 	<string name="mainactivity_directtorestaurant">Ir directamente a un restaurante (only for DEBUG)</string>
 	<string name="mainactivity_welcome">Bienvenido a Servinow. Lea el código QR de su mesa o busque restaurantes cercanos en nuestro mapa.</string>
