@@ -89,8 +89,10 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 		
 		loadingView.setVisibility(View.INVISIBLE);
 		
-		qrReadingSystem.releaseCamera();
-		qrReadingSystem.start();
+		if(qrReadingSystem != null) {
+			qrReadingSystem.releaseCamera();
+			qrReadingSystem.start();
+		}
 	}
 
 	@Override
