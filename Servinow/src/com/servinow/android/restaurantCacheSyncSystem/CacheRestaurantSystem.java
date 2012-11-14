@@ -71,12 +71,13 @@ public class CacheRestaurantSystem {
 					productCache.close();
 				}
 				
+				return true;
+				
 			}catch(JsonSyntaxException e){
 				return false;
 			} catch (IOException e) {
 				return false;
 			}
-			return true;
 		}
 
 		@Override

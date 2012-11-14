@@ -22,9 +22,14 @@ public class Categoria {
 	@DatabaseField(canBeNull = false)
 	private String nombre;
 	
+	@Deprecated
 	@DatabaseField(canBeNull = true)
 	private String urlImage;
 	
+	@DatabaseField(canBeNull = false)
+	private String imageName;
+	
+	@Deprecated
 	//TODO remove.
 	private Drawable imagen;
 	
@@ -43,6 +48,7 @@ public class Categoria {
 		return id;
 	}
 
+	@Deprecated
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -55,18 +61,26 @@ public class Categoria {
 		this.nombre = nombre;
 	}
 
+	@Deprecated
 	public String getUrlImage() {
 		return urlImage;
 	}
 
+	@Deprecated
 	public void setUrlImage(String urlImage) {
 		this.urlImage = urlImage;
 	}
+	
+	public String getImageName(){
+		return this.imageName;
+	}
 
+	@Deprecated
 	public Drawable getImagen() {
 		return imagen;
 	}
 
+	@Deprecated
 	public void setImagen(Drawable imagen) {
 		this.imagen = imagen;
 	}

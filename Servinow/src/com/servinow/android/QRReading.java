@@ -27,16 +27,15 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.qrreading);
 		
 		//Remove me in the final product START
 		Bundle extras = getIntent().getExtras();
 		if(extras != null && extras.getBoolean(PARAM.GOTORESTAURANT.toString(), false)) {
-			onAnswer(1, 1);
+			//onAnswer(1, 1);
 			startRestDEBUG = new CacheRestaurantSystem(this, 1, 1, this);
 			return;
 		}//Remove me ENDS.
-		
-		setContentView(R.layout.qrreading);
 
 		/**
 		 * The activity have to be in portrait mode all time.
@@ -72,8 +71,8 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 	public void onAnswer(int restaurantID, int placeID) {
 		Intent i = new Intent(QRReading.this, CategoriasActivity.class);
 		Bundle b = new Bundle();
-		b.putInt(QRReading.PARAM.RESTAURANT.toString(), restaurantID);
-		b.putInt(QRReading.PARAM.PLACE.toString(), placeID);
+		b.putInt(CategoriasActivity.PARAM.RESTAURANT.toString(), restaurantID);
+		b.putInt(CategoriasActivity.PARAM.PLACE.toString(), placeID);
 		i.putExtras(b);
 		
 		startActivity(i);

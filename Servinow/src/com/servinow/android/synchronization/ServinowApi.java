@@ -10,7 +10,7 @@ import java.net.URL;
 public abstract class ServinowApi {
 
 	protected final static String host = "http://travelme.bloodblog.net/servinow/api";
-	protected final static int readTimeout = 20000; //20 seconds.
+	protected final static int readTimeout = 30000; //20 seconds.
 	protected final static int connectTimeout = 15000; //15 seconds.
 
 	protected String api_url;
@@ -19,30 +19,36 @@ public abstract class ServinowApi {
 		api_url = host+apiCall;
 	}
 
-	public String call() throws IOException{
+	protected InputStream doConnection() throws IOException{
 		InputStream is = null;
 
-		try {
-			URL url = new URL(api_url);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setReadTimeout(getReadTimeout());
-			conn.setConnectTimeout(getConnectTimeout());
-	
-			conn.connect();
-			is = conn.getInputStream();
-			
-			BufferedReader r = new BufferedReader(new InputStreamReader(is));
-			StringBuilder total = new StringBuilder();
-			String line;
-			while ((line = r.readLine()) != null) {
-			    total.append(line);
-			}
-			
-			return total.toString();
-		} finally {
-			if(is != null)
-				is.close();
+		URL url = new URL(api_url);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setReadTimeout(getReadTimeout());
+		conn.setConnectTimeout(getConnectTimeout());
+
+		conn.connect();
+
+		is = conn.getInputStream();
+
+		return is;
+	}
+
+	public String call() throws IOException{
+
+		InputStream is = doConnection();
+
+		BufferedReader r = new BufferedReader(new InputStreamReader(is));
+		StringBuilder total = new StringBuilder();
+		String line;
+		while ((line = r.readLine()) != null) {
+			total.append(line);
 		}
+		
+		//There's no need to do that. Or at least it doesn't break.
+		//is.close();
+
+		return total.toString();
 	}
 
 	private static int getReadTimeout() {
@@ -52,5 +58,5 @@ public abstract class ServinowApi {
 	private static int getConnectTimeout() {
 		return connectTimeout;
 	}
-	
+
 }

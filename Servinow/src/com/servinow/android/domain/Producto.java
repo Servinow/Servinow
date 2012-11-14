@@ -22,8 +22,12 @@ public class Producto {
 	@DatabaseField(canBeNull = false)
 	private String nombre;
 	
+	@Deprecated
 	@DatabaseField(canBeNull = true)
 	private String urlImage;
+
+	@DatabaseField(canBeNull = false)
+	private String imageName;
 	
 	//TODO remove.
 	@Deprecated
@@ -45,17 +49,14 @@ public class Producto {
 	private Collection<Producto> meals;
 	
 	// Requerido por ORMLite - No getter or setter for this.
-	@SuppressWarnings("unused")
 	@DatabaseField(foreign=true, foreignAutoCreate=true, foreignAutoRefresh=true)
 	public Producto product;
 	
 	// Requerido por ORMLite - No getter or setter for this.
-	@SuppressWarnings("unused")
 	@DatabaseField(foreign=true, foreignAutoCreate=true, foreignAutoRefresh=true)
 	public Categoria category;
 	
 	// Requerido por ORMLite - No getter or setter for this.
-	@SuppressWarnings("unused")
 	@DatabaseField(foreign=true, foreignAutoCreate=true, foreignAutoRefresh=true)
 	public Restaurant restaurant;
 	
@@ -92,6 +93,7 @@ public class Producto {
 		this.nombre = nombre;
 	}
 
+	@Deprecated
 	public String getUrlImage() {
 		return urlImage;
 	}
@@ -99,6 +101,10 @@ public class Producto {
 	@Deprecated
 	public void setUrlImage(String urlImage) {
 		this.urlImage = urlImage;
+	}
+	
+	public String getImageName(){
+		return this.imageName;
 	}
 
 	public Drawable getImagen() {
