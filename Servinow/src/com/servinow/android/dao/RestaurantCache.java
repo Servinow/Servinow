@@ -21,6 +21,7 @@ public class RestaurantCache extends ServinowDAOBase<Restaurant, Integer> {
 		RuntimeExceptionDao<Restaurant, Integer> restaurantDAO = getDAO();
 		restaurantDAO.createOrUpdate(restaurant);
 		
+		new PlaceCache(context).setPlacesCache(restaurant, restaurant.getPlaces());
 		new CategoryCache(context).setCategoriesCache(restaurant, restaurant.getCategories());
 		new ProductCache(context).setProductCache(restaurant, restaurant.getProducts());
 	}

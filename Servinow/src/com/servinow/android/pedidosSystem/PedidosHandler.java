@@ -20,21 +20,13 @@ public class PedidosHandler {
 	
 	private Context context;
 	
-	private PedidoCache pedidoCache;
-	private LineaPedidoCache lineaPedidoCache;
-	private RestaurantCache restaurantCache;
-	private PlaceCache placeCache;
-	
 	public PedidosHandler(Context context){
 		this.context = context;
-		
-		pedidoCache = new PedidoCache(this.context);
-		lineaPedidoCache = new LineaPedidoCache(this.context);
-		restaurantCache = new RestaurantCache(this.context);
-		placeCache = new PlaceCache(this.context);
 	}
 	
 	public IdPedidoAndIdLinea insertarProducto(Producto producto, int cantidad, int mesaId, int restauranteId){
+		
+		PedidoCache pedidoCache = new PedidoCache(context);
 		
 		// Coger el pedido no confirmado de la base de datos
 		Pedido pedidoNoConfirmado = pedidoCache.getPedidoNotConfirmed(mesaId, restauranteId);
@@ -42,9 +34,9 @@ public class PedidosHandler {
 		// Si no existe pedido
 		if(pedidoNoConfirmado == null){
 			// Coger place de la base de datos a partir de su id
-			Place place = placeCache.getPlaceFromCache(mesaId);
+			Place place = new PlaceCache(context).getPlaceFromCache(mesaId);
 			// Coger restaurant de la base de datos a partir de su id
-			Restaurant restaurant = restaurantCache.getRestaurantFromCache(restauranteId);
+			Restaurant restaurant = new RestaurantCache(context).getRestaurantFromCache(restauranteId);
 			
 			Pedido pedido = new Pedido(new Date());
 			pedido.setPlace(place);
@@ -53,14 +45,22 @@ public class PedidosHandler {
 			pedidoNoConfirmado = pedidoCache.insertPedidoIfNotExists(pedido);
 		}
 		
-		// Crear LineaPedido a partir de la cantidad y el producto
-		LineaPedido lineaPedido = new LineaPedido(cantidad, Estado.EN_COLA, producto);
-		lineaPedido.setOrder(pedidoNoConfirmado);
+		LineaPedidoCache lineaPedidoCache = new LineaPedidoCache(context);
+		LineaPedido lineaPedido = lineaPedidoCache.getLineaPedido(producto.getId());
 		
-		// Insertar LineaPedido en la base de datos
-		lineaPedido = lineaPedidoCache.insertLineaPedidoIfNotExists(lineaPedido);
+		if(lineaPedido == null){
+			// Crear LineaPedido a partir de la cantidad y el producto
+			lineaPedido = new LineaPedido(cantidad, Estado.EN_COLA, producto);
+			lineaPedido.setOrder(pedidoNoConfirmado);
+			
+			// Insertar LineaPedido en la base de datos
+			lineaPedido = lineaPedidoCache.insertLineaPedidoIfNotExists(lineaPedido);
+		}
+		else{
+			lineaPedidoCache.updateQuantityLineaPedido(lineaPedido.getId(), lineaPedido.getCantidad() + cantidad);
+		}
 		
-		// Devolver el identificador de la l’nea de pedido creada y el identificador del pedido
+		// Devolver el identificador de la lï¿½nea de pedido creada y el identificador del pedido
 		IdPedidoAndIdLinea idPedidoAndIdLinea = new IdPedidoAndIdLinea();
 		idPedidoAndIdLinea.idPedido = pedidoNoConfirmado.getId();
 		idPedidoAndIdLinea.idLinea = lineaPedido.getId();
@@ -69,6 +69,9 @@ public class PedidosHandler {
 	}
 
 	public void cancelarPedido(int pedidoId){
+		
+		LineaPedidoCache lineaPedidoCache = new LineaPedidoCache(context);
+		PedidoCache pedidoCache = new PedidoCache(context);
 		
 		// Borrar todas las lineas pedido que apunten a pedido
 		lineaPedidoCache.deleteLineaPedidoByPedido(pedidoId);

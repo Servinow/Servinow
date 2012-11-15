@@ -47,7 +47,7 @@ public class ListaPedidoActivity extends SherlockListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista_pedido);
 		
-		// Leer los parámetros recibidos: RESTAURANT y PLACE
+		// Leer los par√°metros recibidos: RESTAURANT y PLACE
 		Bundle extras = getIntent().getExtras();
 		if(extras != null)
 		{
@@ -103,11 +103,10 @@ public class ListaPedidoActivity extends SherlockListActivity {
 		
 		// Eventos de Botones
 		if(pedido != null){
-			((TextView) findViewById(R.id.lista_pedido_precio_total)).setText( Math.round(pedido.getTotal()*100.0)/100.0 + " €");
-			//((TextView) findViewById(R.id.lista_pedido_precio_total)).setText( pedido.getTotal() + " €");
+			((TextView) findViewById(R.id.lista_pedido_precio_total)).setText( Math.round(pedido.getTotal()*100.0)/100.0 + " ‚Ç¨");
 		}
 		else{
-			((TextView) findViewById(R.id.lista_pedido_precio_total)).setText("0 €");
+			((TextView) findViewById(R.id.lista_pedido_precio_total)).setText("0 ‚Ç¨");
 		}
 		if( this.pedido != null ){
 			((Button) findViewById(R.id.lista_pedido_button_edit)).setOnClickListener(editButtonClick);
@@ -126,6 +125,47 @@ public class ListaPedidoActivity extends SherlockListActivity {
 		}
 	}
 	
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        
+        // Borrar todos los elementos del adapter
+        for(int i=0; i < listaPedidoAdapter.getCount(); i++){
+        	listaPedidoAdapter.remove(listaPedidoAdapter.getItem(i));
+        }
+        
+        // Insertar los nuevos elementos en el adapter
+        
+		this.pedido = new PedidoCache( this ).getPedidoNotConfirmed(placeID, restaurantID);
+		
+		SelectedItem[] selectedItems = new SelectedItem[0];
+		if( pedido != null){
+		
+			int numSelectedItems = pedido.getLineas().size();
+		
+			selectedItems = new SelectedItem[numSelectedItems];
+	
+			List<LineaPedido> lineasPedido = new ArrayList<LineaPedido>(pedido.getLineas());
+			
+			for(int i=0; i < numSelectedItems; i++){
+				selectedItems[i] = new SelectedItem(lineasPedido.get(i), this.restaurantID, this.placeID);
+			}
+		}
+		 
+		 // Crear los datos para el Adapter a partir de los datos de la base de datos
+		 ArrayList<SelectedItem> arrayList = new ArrayList<SelectedItem>();
+		 arrayList.addAll(Arrays.asList(selectedItems));
+        
+		 // Crea el ADAPTER
+		 this.listaPedidoAdapter = new ListaPedidoAdapter(this, R.layout.lista_pedido_row, arrayList);
+		 setListAdapter( listaPedidoAdapter );
+		 
+		 // Modificar el precio total
+    	((TextView) findViewById(R.id.lista_pedido_precio_total)).setText(Math.round(pedido.getTotal()*100.0)/100.0 + " ‚Ç¨");
+        
+    }
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    getSupportMenuInflater().inflate(R.menu.activity_lista_pedido, menu);
@@ -133,6 +173,16 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.lista_pedido_button_go_to_categorias:
+    			Intent i = new Intent(ListaPedidoActivity.this, CategoriasActivity.class);
+    			Bundle b = new Bundle();
+    			b.putInt(Param.RESTAURANT.toString(), restaurantID);
+    			b.putInt(Param.PLACE.toString(), placeID);
+    			i.putExtras(b);
+    			startActivity(i);
+        }
 	    return super.onOptionsItemSelected(item);
 	}
 	
@@ -168,7 +218,7 @@ public class ListaPedidoActivity extends SherlockListActivity {
         	for(int i=0; i < numberOfItems; i++){
         		if(items[i].isChecked()){
         			listaPedidoAdapter.remove(items[i]);
-        			// Insertar los elementos en la lista para borrar después
+        			// Insertar los elementos en la lista para borrar despu√©s
         			// la lista entera de la base de datos
         			lineaPedidoIdList.add(items[i].getId());
                 	itemsRemoved++;
@@ -182,7 +232,7 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	        	// Modificar el valor del PrecioTotal
 	        	pedido = new PedidoCache( ListaPedidoActivity.this ).
 	        			getPedidoNotConfirmed(ListaPedidoActivity.this.placeID, ListaPedidoActivity.this.restaurantID);
-	        	((TextView) findViewById(R.id.lista_pedido_precio_total)).setText(Math.round(pedido.getTotal()*100.0)/100.0 + " €");
+	        	((TextView) findViewById(R.id.lista_pedido_precio_total)).setText(Math.round(pedido.getTotal()*100.0)/100.0 + " ‚Ç¨");
         	}
         	
         	for(int i=0; i < listaPedidoAdapter.getCount(); i++){
@@ -190,6 +240,14 @@ public class ListaPedidoActivity extends SherlockListActivity {
         		itemSelected.setCheckBoxVisibility(View.INVISIBLE);
         		itemSelected.setImageVisibility(View.VISIBLE);
         	}
+        	// Si ya no hay l√≠neas de pedido en el pedido se desabilitan los botones
+        	if(listaPedidoAdapter.getCount() == 0){
+        		((Button) findViewById(R.id.lista_pedido_button_edit)).setEnabled(false);
+    			
+    			((Button) findViewById(R.id.lista_pedido_button_cancel)).setEnabled(false);
+    			((Button) findViewById(R.id.lista_pedido_button_confirm)).setEnabled(false);
+        	}
+        	
         	findViewById(R.id.lista_pedido_bar_delete).setVisibility(View.VISIBLE);
 	    	findViewById(R.id.lista_pedido_bar_delete_2).setVisibility(View.INVISIBLE);        	
         	listaPedidoAdapter.notifyDataSetChanged();
@@ -250,7 +308,7 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	                	   
 	                	   pedido = new PedidoCache( ListaPedidoActivity.this ).
 	       	        			getPedidoNotConfirmed(ListaPedidoActivity.this.placeID, ListaPedidoActivity.this.restaurantID);
-	       	        		((TextView) findViewById(R.id.lista_pedido_precio_total)).setText(Math.round(pedido.getTotal()*100.0)/100.0 + " €");
+	       	        		((TextView) findViewById(R.id.lista_pedido_precio_total)).setText(Math.round(pedido.getTotal()*100.0)/100.0 + " ‚Ç¨");
 	                	   
 	                  	   // Modificar en el adapter
 	                	   selectedItem.setQuantity(cantidad);
@@ -335,7 +393,7 @@ public class ListaPedidoActivity extends SherlockListActivity {
 
 	    	        	   new PedidosHandler(ListaPedidoActivity.this).cancelarPedido(ListaPedidoActivity.this.pedido.getId());
 	    	        	   
-	    	        	   // Ir a la actividad de categorías CategoriasActivity
+	    	        	   // Ir a la actividad de categor√≠as CategoriasActivity
 	    	        	   Intent myIntent = new Intent(ListaPedidoActivity.this, CategoriasActivity.class);
 	    	       			Bundle b = new Bundle();
 	    	       			b.putInt(Param.RESTAURANT.toString(), restaurantID);

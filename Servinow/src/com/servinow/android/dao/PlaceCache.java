@@ -1,9 +1,13 @@
 package com.servinow.android.dao;
 
+import java.util.Collection;
+
 import android.content.Context;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.servinow.android.domain.Categoria;
 import com.servinow.android.domain.Place;
+import com.servinow.android.domain.Restaurant;
 
 public class PlaceCache extends ServinowDAOBase<Place, Integer> {
 
@@ -21,4 +25,14 @@ public class PlaceCache extends ServinowDAOBase<Place, Integer> {
 		RuntimeExceptionDao<Place, Integer> placeDAO = getDAO();
 		placeDAO.createOrUpdate(place);
 	}
+	
+	void setPlacesCache(Restaurant restaurant , Collection<Place> placeList){
+		RuntimeExceptionDao<Place, Integer> placeDAO = getDAO();
+		
+		for(Place place: placeList){
+			place.restaurant = restaurant;
+			placeDAO.createOrUpdate(place);
+		}
+	}
+
 }

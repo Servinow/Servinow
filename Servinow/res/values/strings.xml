@@ -19,6 +19,8 @@
     <string name="lista_pedido_button_delete_cancel">Cancelar</string>
     <string name="lista_pedido_button_delete_confirm">Borrar</string>
     <string name="lista_pedido_button_change_quantity">Cambiar Cantidad</string>
+    <string name="lista_pedido_button_go_to_categorias">Seguir pidiendo</string> 
+    <string name="categorias_button_lista_pedidos">Lista Pedidos</string>
     <string name="app_name">Servinow</string>
     <string name="menu_settings">Settings</string>
     <string name="paymentmethoddialog_title">Seleccionar método de pago</string>

@@ -16,7 +16,7 @@ public class Place {
 	private long lastUpdate;
 	
 	@DatabaseField(foreign=true, foreignAutoCreate=true, foreignAutoRefresh=true)
-	private Restaurant restaurant;
+	public Restaurant restaurant;
 	
 	@ForeignCollectionField(eager = true)
 	private Collection<Pedido> orders;

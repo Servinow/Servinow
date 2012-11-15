@@ -74,4 +74,15 @@ public class LineaPedidoCache extends ServinowDAOBase<LineaPedido, Integer> {
 			e.printStackTrace();
 		}
 	}
+	
+	public LineaPedido getLineaPedido(int productoId){
+		List<LineaPedido> lineaPedidoList = getDAO().queryForEq("producto_id", productoId);
+		
+		LineaPedido lineaPedido = null;
+		if(!lineaPedidoList.isEmpty()){
+			lineaPedido = lineaPedidoList.get(0);
+		}
+		
+		return lineaPedido;
+	}
 }
