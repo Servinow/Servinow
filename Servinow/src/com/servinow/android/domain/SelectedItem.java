@@ -1,16 +1,20 @@
 package com.servinow.android.domain;
 
-import com.servinow.android.R;
-
 import android.view.View;
-
-//import android.graphics.drawable.Drawable;
 
 public class SelectedItem {
 	
 	  private int id;
 		
 	  private String name;
+	  
+	  private int productoId;
+	  
+	  private int categoriaId;
+	  
+	  private int placeId;
+	  
+	  private int restaurantId;
 	  
 	  private int quantity;
 	  
@@ -42,13 +46,17 @@ public class SelectedItem {
 	    this.checked = checked;
 	  }
 	  
-	  public SelectedItem(LineaPedido lineaPedido) {
+	  public SelectedItem(LineaPedido lineaPedido, int restaurantId, int placeId) {
 		Producto producto = lineaPedido.getProducto();
 		this.id = lineaPedido.getId();
 		this.name = producto.getNombre();
 	    this.quantity = lineaPedido.getCantidad();
 	    this.unitPrice = producto.getPrecio();
 	    this.urlImage = producto.getUrlImage();
+	    this.productoId = producto.getId();
+	    this.categoriaId = producto.getCategoria().getId();
+	    this.placeId = placeId;
+	    this.restaurantId = restaurantId;
 	  }
 	  
 	  /**
@@ -63,6 +71,11 @@ public class SelectedItem {
 	  public int getQuantity() {
 	    return quantity;
 	  }
+	  
+	  public void setQuantity(int quantity) {
+	    this.quantity = quantity;
+	  }
+	  
 	  /**
 	   * @return the unit Price
 	   */
@@ -108,6 +121,38 @@ public class SelectedItem {
 	  
 	  public int getId(){
 		  return id;
+	  }
+	  
+	  public int getCategoriaId(){
+		  return categoriaId;
+	  }
+	  
+	  public void setCategoriaId(int categoriaId){
+		  this.categoriaId = categoriaId;
+	  }
+	  
+	  public int getProductoId(){
+		  return this.productoId;
+	  }
+	  
+	  public void setProductoId(int productoId){
+		  this.productoId = productoId; 
+	  }
+	  
+	  public int getRestaurantId(){
+		  return this.restaurantId;
+	  }
+	  
+	  public void setRestaurantId(int restaurantId){
+		  this.restaurantId = restaurantId;
+	  }
+	  
+	  public void setPlaceId(int placeId){
+		  this.placeId = placeId;
+	  }
+	  
+	  public int getPlaceId(){
+		  return placeId;
 	  }
 	  
 	  /**

@@ -1,18 +1,23 @@
 package com.servinow.android;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView.FindListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListActivity;
@@ -27,50 +32,98 @@ import com.servinow.android.dao.LineaPedidoCache;
 import com.servinow.android.dao.PedidoCache;
 import com.servinow.android.domain.Pedido;
 
+import com.servinow.android.pedidosSystem.PedidosHandler;
+import com.servinow.android.picker.NumberPicker;
+
 public class ListaPedidoActivity extends SherlockListActivity {
 
 	private ListaPedidoAdapter listaPedidoAdapter;
 	private Pedido pedido;
+	private int restaurantID;
+	private int placeID;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista_pedido);
 		
-		Log.i("Database", "hola");
+		// Leer los par‡metros recibidos: RESTAURANT y PLACE
+		Bundle extras = getIntent().getExtras();
+		if(extras != null)
+		{
+			this.restaurantID = extras.getInt(Param.RESTAURANT.toString());
+			this.placeID = extras.getInt(Param.PLACE.toString());
+		}
 		
-		// Leer de la base de datos
+		// Leer de la base de datos el pedido no confirmado
 		
-		PedidoCache pedidoDAO = new PedidoCache( ListaPedidoActivity.this );
-		pedido = pedidoDAO.getPedidoNotConfirmed();
-		Log.i("Database1", pedido.getLineas().size() + "");
+		this.pedido = new PedidoCache( this ).getPedidoNotConfirmed(placeID, restaurantID);
 		
-		int numSelectedItems = pedido.getLineas().size();
+		SelectedItem[] selectedItems = new SelectedItem[0];
+		if( pedido != null){
 		
-		SelectedItem[] selectedItems = new SelectedItem[numSelectedItems];
+			int numSelectedItems = pedido.getLineas().size();
 		
-		List<LineaPedido> lineasPedido = new ArrayList<LineaPedido>(pedido.getLineas());
-		
-		for(int i=0; i < numSelectedItems; i++){
-			selectedItems[i] = new SelectedItem(lineasPedido.get(i));
+			selectedItems = new SelectedItem[numSelectedItems];
+	
+			List<LineaPedido> lineasPedido = new ArrayList<LineaPedido>(pedido.getLineas());
+			
+			for(int i=0; i < numSelectedItems; i++){
+				selectedItems[i] = new SelectedItem(lineasPedido.get(i), this.restaurantID, this.placeID);
+			}
 		}
 		 
-		 // Use ArrayList instead of vector
+		 // Crear los datos para el Adapter a partir de los datos de la base de datos
 		 ArrayList<SelectedItem> arrayList = new ArrayList<SelectedItem>();
 		 arrayList.addAll(Arrays.asList(selectedItems));
 		
-		listaPedidoAdapter = new ListaPedidoAdapter(this, R.layout.lista_pedido_row, arrayList);
+		 // Crea el ADAPTER
+		this.listaPedidoAdapter = new ListaPedidoAdapter(this, R.layout.lista_pedido_row, arrayList);
 		setListAdapter( listaPedidoAdapter );
 		
-		((TextView) findViewById(R.id.lista_pedido_precio_total)).setText(pedido.getTotal()+ " Û");
+		// Poner evento de ONCLICK al listView
+		getListView().setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// IR A LA ACTIVIDAD DetalleProductoActivity
+				Intent myIntent = new Intent(ListaPedidoActivity.this, DetalleProductoActivity.class );
+	        	Bundle b = new Bundle();
+	        	SelectedItem selectedItem = (SelectedItem) parent.getAdapter().getItem(position);
+	        	b.putInt(Param.RESTAURANT.toString(), selectedItem.getRestaurantId());
+	        	b.putInt(Param.PLACE.toString(), selectedItem.getPlaceId());
+	        	b.putInt(Param.CATEGORIA.toString(), selectedItem.getCategoriaId());
+	        	b.putInt(Param.PRODUCTO.toString(), selectedItem.getProductoId());
+	        	
+	        	myIntent.putExtras(b);
+	        	
+	        	startActivity(myIntent);
+            }
+        });
 		
-		((Button) findViewById(R.id.lista_pedido_button_edit)).setOnClickListener(editButtonClick);
-		((Button) findViewById(R.id.lista_pedido_button_delete_confirm)).setOnClickListener(deleteConfirmButtonClick);
-		((Button) findViewById(R.id.lista_pedido_button_delete_all)).setOnClickListener(deleteAllButtonClick);
-		((Button)findViewById(R.id.lista_pedido_button_delete_cancel)).setOnClickListener(deleteCancelButtonClick);
 		
-		((Button) findViewById(R.id.lista_pedido_button_cancel)).setOnClickListener(buttonCancelClick);
-		((Button) findViewById(R.id.lista_pedido_button_confirm)).setOnClickListener(buttonConfirmClick);
+		// Eventos de Botones
+		if(pedido != null){
+			((TextView) findViewById(R.id.lista_pedido_precio_total)).setText( Math.round(pedido.getTotal()*100.0)/100.0 + " Û");
+			//((TextView) findViewById(R.id.lista_pedido_precio_total)).setText( pedido.getTotal() + " Û");
+		}
+		else{
+			((TextView) findViewById(R.id.lista_pedido_precio_total)).setText("0 Û");
+		}
+		if( this.pedido != null ){
+			((Button) findViewById(R.id.lista_pedido_button_edit)).setOnClickListener(editButtonClick);
+			((Button) findViewById(R.id.lista_pedido_button_delete_confirm)).setOnClickListener(deleteConfirmButtonClick);
+			((Button) findViewById(R.id.lista_pedido_button_change_quantity)).setOnClickListener(changeQuantityButtonClick);
+			((Button) findViewById(R.id.lista_pedido_button_delete_cancel)).setOnClickListener(deleteCancelButtonClick);
+			
+			((Button) findViewById(R.id.lista_pedido_button_cancel)).setOnClickListener(buttonCancelClick);
+			((Button) findViewById(R.id.lista_pedido_button_confirm)).setOnClickListener(buttonConfirmClick);
+		}
+		else{
+			((Button) findViewById(R.id.lista_pedido_button_edit)).setEnabled(false);
+			
+			((Button) findViewById(R.id.lista_pedido_button_cancel)).setEnabled(false);
+			((Button) findViewById(R.id.lista_pedido_button_confirm)).setEnabled(false);
+		}
 	}
 	
 	@Override
@@ -88,6 +141,8 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	    public void onClick(View v) {
 	    	findViewById(R.id.lista_pedido_bar_delete).setVisibility(View.INVISIBLE);
 	    	findViewById(R.id.lista_pedido_bar_delete_2).setVisibility(View.VISIBLE);
+	    	findViewById(R.id.lista_pedido_button_delete_confirm).setEnabled(false);
+	    	findViewById(R.id.lista_pedido_button_change_quantity).setEnabled(false);
 	    	for(int i=0; i < listaPedidoAdapter.getCount(); i++){
         		SelectedItem itemSelected = listaPedidoAdapter.getItem(i);
         		itemSelected.setCheckBoxVisibility(View.VISIBLE);
@@ -100,26 +155,34 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	// Create an anonymous implementation of OnClickListener
 	private OnClickListener deleteConfirmButtonClick = new OnClickListener() {
 	    public void onClick(View v) {
+	    	
 	    	SelectedItem[] items = new SelectedItem[listaPedidoAdapter.getCount()];
-	    	LineaPedidoCache listaPedidoDAO = new LineaPedidoCache( ListaPedidoActivity.this );
-	    	PedidoCache pedidoDAO = new PedidoCache( ListaPedidoActivity.this );
         	for(int i=0; i < listaPedidoAdapter.getCount(); i++){
         		items[i] = listaPedidoAdapter.getItem(i);
         	}
+        	
         	int numberOfItems = listaPedidoAdapter.getCount();
         	int itemsRemoved = 0;
+        	List<Integer> lineaPedidoIdList = new ArrayList<Integer>();
+        	
         	for(int i=0; i < numberOfItems; i++){
         		if(items[i].isChecked()){
         			listaPedidoAdapter.remove(items[i]);
-        			// BORRAR ELEMENTOS DE LA BASE DE DATOS
-                	listaPedidoDAO.deleteLineaPedido(items[i].getId());
+        			// Insertar los elementos en la lista para borrar despuŽs
+        			// la lista entera de la base de datos
+        			lineaPedidoIdList.add(items[i].getId());
                 	itemsRemoved++;
         		}
         	}
+        	
+        	// BORRAR DE LA BASE DE DATOS
+        	new LineaPedidoCache(ListaPedidoActivity.this).deleteMultipleLineaPedidoById(lineaPedidoIdList);
+        	
         	if(itemsRemoved > 0){
 	        	// Modificar el valor del PrecioTotal
-	        	pedido = pedidoDAO.getPedidoNotConfirmed();
-	        	((TextView) findViewById(R.id.lista_pedido_precio_total)).setText(pedido.getTotal()+"" + "");
+	        	pedido = new PedidoCache( ListaPedidoActivity.this ).
+	        			getPedidoNotConfirmed(ListaPedidoActivity.this.placeID, ListaPedidoActivity.this.restaurantID);
+	        	((TextView) findViewById(R.id.lista_pedido_precio_total)).setText(Math.round(pedido.getTotal()*100.0)/100.0 + " Û");
         	}
         	
         	for(int i=0; i < listaPedidoAdapter.getCount(); i++){
@@ -147,15 +210,76 @@ public class ListaPedidoActivity extends SherlockListActivity {
         	listaPedidoAdapter.notifyDataSetChanged();
 	    }
 	};
-	
-	// Create an anonymous implementation of OnClickListener
-	private OnClickListener deleteAllButtonClick = new OnClickListener() {
+
+	private OnClickListener changeQuantityButtonClick = new OnClickListener() {
 	    public void onClick(View v) {
-	    	for(int i=0; i < listaPedidoAdapter.getCount(); i++){
-        		SelectedItem itemSelected = listaPedidoAdapter.getItem(i);
-        		itemSelected.setChecked(true);
-        	}
-        	listaPedidoAdapter.notifyDataSetChanged();
+	    	
+	        SelectedItem selectedItem = null;
+	        for(int i=0; i < ListaPedidoActivity.this.listaPedidoAdapter.getCount(); i++){
+	        	if(ListaPedidoActivity.this.listaPedidoAdapter.getItem(i).isChecked()){
+	        		selectedItem = ListaPedidoActivity.this.listaPedidoAdapter.getItem(i);
+	        		break;
+	        	}
+	        }
+	    	
+	        AlertDialog.Builder builder = new AlertDialog.Builder(ListaPedidoActivity.this);
+	        // Get the layout inflater
+	        LayoutInflater inflater = ListaPedidoActivity.this.getLayoutInflater();
+
+	        // Inflate and set the layout for the dialog
+	        // Pass null as the parent view because its going in the dialog layout
+	        View view = inflater.inflate(R.layout.picker_activity, null);
+	        
+	        builder.setView(view)
+	        // Add action buttons
+	               .setPositiveButton(R.string.lista_pedido_cancel_button_ok, new DialogInterface.OnClickListener() {
+	                   @Override
+	                   public void onClick(DialogInterface dialog, int id) {
+		           	       SelectedItem selectedItem = null;
+		        	       for(int i=0; i < ListaPedidoActivity.this.listaPedidoAdapter.getCount(); i++){
+		        	    	   if(ListaPedidoActivity.this.listaPedidoAdapter.getItem(i).isChecked()){
+		        	    		   selectedItem = ListaPedidoActivity.this.listaPedidoAdapter.getItem(i);
+		        	        	   break;
+		        	           }
+		        	       }
+	                	   NumberPicker numberPicker = (NumberPicker) ((AlertDialog) dialog).findViewById(R.id.lista_pedido_picker);
+	                  	   int cantidad = numberPicker.getCurrent();
+	                	   
+	                	   // Modificar en la base de datos
+	                	   new LineaPedidoCache(ListaPedidoActivity.this).updateQuantityLineaPedido(selectedItem.getId(), cantidad);
+	                	   
+	                	   pedido = new PedidoCache( ListaPedidoActivity.this ).
+	       	        			getPedidoNotConfirmed(ListaPedidoActivity.this.placeID, ListaPedidoActivity.this.restaurantID);
+	       	        		((TextView) findViewById(R.id.lista_pedido_precio_total)).setText(Math.round(pedido.getTotal()*100.0)/100.0 + " Û");
+	                	   
+	                  	   // Modificar en el adapter
+	                	   selectedItem.setQuantity(cantidad);
+	                	   ListaPedidoActivity.this.listaPedidoAdapter.notifyDataSetChanged();
+	                	   
+	           	    	findViewById(R.id.lista_pedido_bar_delete).setVisibility(View.VISIBLE);
+	        	    	findViewById(R.id.lista_pedido_bar_delete_2).setVisibility(View.INVISIBLE);
+	        	    	for(int i=0; i < listaPedidoAdapter.getCount(); i++){
+	                		SelectedItem itemSelected = listaPedidoAdapter.getItem(i);
+	                		itemSelected.setChecked(false);
+	                		itemSelected.setCheckBoxVisibility(View.INVISIBLE);
+	                		itemSelected.setImageVisibility(View.VISIBLE);
+	                	}
+	                	listaPedidoAdapter.notifyDataSetChanged();
+	                   }
+	               })
+	               .setNegativeButton(R.string.lista_pedido_cancel_button_cancel, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      
+	                   }
+	               });
+	        
+	    	NumberPicker numberPicker = (NumberPicker) view.findViewById(R.id.lista_pedido_picker);
+	    	
+	    	numberPicker.setCurrent(selectedItem.getQuantity());
+	        
+	        // Create the AlertDialog
+	    	AlertDialog alert = builder.create();
+	    	alert.show();
 	    }
 	};
 	
@@ -170,7 +294,16 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	    	// Add the buttons
 	    	builder.setPositiveButton(R.string.lista_pedido_confirm_button_ok, new DialogInterface.OnClickListener() {
 	    	           public void onClick(DialogInterface dialog, int id) {
+	    	        	   // Marcar pedido como confirmado
+	    	        	   ListaPedidoActivity.this.pedido.setConfirmado(true);
+	    	        	   new PedidoCache(ListaPedidoActivity.this).updatePedido(pedido);
+	    	        	   
+	    	        	   // TODO INTENT A LA ACTIVIDAD DE CheckStateActivity.class
 	    	        	   Intent myIntent = new Intent(ListaPedidoActivity.this, MainActivity.class);
+	    	       			Bundle b = new Bundle();
+	    	       			b.putInt(Param.RESTAURANT.toString(), restaurantID);
+	    	       			b.putInt(Param.PLACE.toString(), placeID);
+	    	       			myIntent.putExtras(b);
 	    	               ListaPedidoActivity.this.startActivity(myIntent);
 	    	           }
 	    	       });
@@ -199,9 +332,15 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	    	           public void onClick(DialogInterface dialog, int id) {
 	    	               // User clicked OK button
 	    	        	   // Borrar todos los datos de la base de datos
+
+	    	        	   new PedidosHandler(ListaPedidoActivity.this).cancelarPedido(ListaPedidoActivity.this.pedido.getId());
 	    	        	   
-	    	        	   // Ir a la actividad de categor’as
-	    	        	   Intent myIntent = new Intent(ListaPedidoActivity.this, MainActivity.class);
+	    	        	   // Ir a la actividad de categor’as CategoriasActivity
+	    	        	   Intent myIntent = new Intent(ListaPedidoActivity.this, CategoriasActivity.class);
+	    	       			Bundle b = new Bundle();
+	    	       			b.putInt(Param.RESTAURANT.toString(), restaurantID);
+	    	       			b.putInt(Param.PLACE.toString(), placeID);
+	    	       			myIntent.putExtras(b);
 	    	               ListaPedidoActivity.this.startActivity(myIntent);
 	    	           }
 	    	       });

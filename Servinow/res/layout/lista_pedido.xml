@@ -19,6 +19,7 @@
 
             <Button
                 android:id="@+id/lista_pedido_button_edit"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/lista_pedido_button_edit" />
@@ -34,15 +35,17 @@
 
             <Button
                 android:id="@+id/lista_pedido_button_delete_cancel"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/lista_pedido_button_delete_cancel" />
 
             <Button
-                android:id="@+id/lista_pedido_button_delete_all"
+                android:id="@+id/lista_pedido_button_change_quantity"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lista_pedido_button_delete_all" />
+                android:text="@string/lista_pedido_button_change_quantity" />
 
             <Button
                 android:id="@+id/lista_pedido_button_delete_confirm"
@@ -100,16 +103,18 @@
 	
 	        <Button
 	            android:id="@+id/lista_pedido_button_cancel"
+	            style="?android:attr/buttonStyleSmall"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:drawableStart="@android:drawable/ic_delete"
+	            android:text="@string/lista_pedido_button_cancelar"
 	        />
 	          
 	        <Button
 	            android:id="@+id/lista_pedido_button_confirm"
+	            style="?android:attr/buttonStyleSmall"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:drawableStart="@android:drawable/ic_menu_add"
+	            android:text="@string/lista_pedido_button_confirmar"
 	        />
 
     	</LinearLayout>

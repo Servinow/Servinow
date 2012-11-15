@@ -1,6 +1,7 @@
 package com.servinow.android;
 
 import android.content.Intent;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.servinow.android.dao.ProductCache;
 import com.servinow.android.domain.Producto;
+import com.servinow.android.pedidosSystem.PedidosHandler;
 
 public class DetalleProductoActivity extends SherlockActivity {
 
@@ -19,6 +21,7 @@ public class DetalleProductoActivity extends SherlockActivity {
 	private int placeID;
 	private int categoriaID;
 	private int productoID;
+	private Producto producto;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,7 @@ public class DetalleProductoActivity extends SherlockActivity {
 			categoriaID = extras.getInt(Param.CATEGORIA.toString());
 			productoID = extras.getInt(Param.PRODUCTO.toString());
 			
-			Producto producto = new ProductCache(this).getProducto(productoID);
+			this.producto = new ProductCache(this).getProducto(productoID);
 	        Resources res = getResources();
 			//TODO obtener las imágenes a partir de su URL
 			producto.setImagen(res.getDrawable(R.drawable.meal));
@@ -45,7 +48,7 @@ public class DetalleProductoActivity extends SherlockActivity {
 			textViewPrecio.setText(String.valueOf(producto.getPrecio()) + " €");
 			
 			TextView textViewDisponible = (TextView) findViewById(R.id.textViewDisponibilidad);
-			String disponibilidad = producto.isStock()?"Disponible":"No disponible";
+			String disponibilidad = producto.isDisponible()?"Disponible":"No disponible";
 			textViewDisponible.setText(disponibilidad);
 			
 			TextView textViewDescripcion = (TextView) findViewById(R.id.textViewDescripcion);
@@ -66,6 +69,9 @@ public class DetalleProductoActivity extends SherlockActivity {
 				b.putInt(Param.CANTIDAD.toString(), 1);
 				
 				// TODO conectar con la parte de Carlos.
+				
+				PedidosHandler pedidosHandler = new PedidosHandler(DetalleProductoActivity.this);
+				pedidosHandler.insertarProducto(producto, 1, placeID, restaurantID);
 				/*Intent i = new Intent(DetalleProductoActivity.this, ?.class);
 				i.putExtras(b);
 				startActivity(i);*/

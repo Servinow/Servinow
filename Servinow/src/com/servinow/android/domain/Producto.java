@@ -40,7 +40,7 @@ public class Producto {
 	private double precio;
 	
 	@DatabaseField(canBeNull = false)
-	private boolean stock;
+	private boolean disponible;
 	
 	@DatabaseField(canBeNull = false)
 	private TipoProducto tipo;
@@ -66,13 +66,13 @@ public class Producto {
 	//TODO remove.
 	@Deprecated
 	public Producto(String nombre, Drawable imagen, String descripcion,
-			double precio, boolean stock) {
+			double precio, boolean disponible) {
 		super();
 		this.nombre = nombre;
 		this.imagen = imagen;
 		this.descripcion = descripcion;
 		this.precio = precio;
-		this.stock = stock;
+		this.disponible = disponible;
 	}
 
 	public int getId() {
@@ -134,13 +134,13 @@ public class Producto {
 		this.descripcion = descripcion;
 	}
 
-	public boolean isStock() {
-		return stock;
+	public boolean isDisponible() {
+		return disponible;
 	}
 
 	@Deprecated
-	public void setStock(boolean stock) {
-		this.stock = stock;
+	public void setDisponible(boolean disponible) {
+		this.disponible = disponible;
 	}
 
 	public TipoProducto getTipo() {
@@ -159,5 +159,9 @@ public class Producto {
 	@Deprecated
 	public void setMeals(Collection<Producto> meals) {
 		this.meals = meals;
+	}
+	
+	public Categoria getCategoria(){
+		return category;
 	}
 }

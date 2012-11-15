@@ -67,6 +67,14 @@ public class LineaPedido {
 		this.producto = producto;
 	}
 	
+	public void setOrder(Pedido pedido){
+		this.order = pedido;
+	}
+	
+	public void getOrder(Pedido pedido){
+		this.order = pedido;
+	}
+	
 	public double getTotal() {
 		return producto.getPrecio() * cantidad;
 	}
