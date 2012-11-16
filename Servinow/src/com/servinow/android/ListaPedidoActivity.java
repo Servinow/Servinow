@@ -8,13 +8,10 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -25,8 +22,6 @@ import com.servinow.android.R;
 import com.servinow.android.domain.LineaPedido;
 import com.servinow.android.domain.SelectedItem;
 import com.servinow.android.widget.ListaPedidoAdapter;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 import com.servinow.android.dao.LineaPedidoCache;
 import com.servinow.android.dao.PedidoCache;
@@ -336,6 +331,7 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	    	        	   new PedidoCache(ListaPedidoActivity.this).updatePedido(pedido);
 	    	        	   
 	    	        	   // TODO INTENT A LA ACTIVIDAD DE CheckStateActivity.class
+	    	        	   // SOLO HAY QUE CAMBIAR MainActivity por CheckStateActivity
 	    	        	   Intent myIntent = new Intent(ListaPedidoActivity.this, MainActivity.class);
 	    	       			Bundle b = new Bundle();
 	    	       			b.putInt(Param.RESTAURANT.toString(), restaurantID);

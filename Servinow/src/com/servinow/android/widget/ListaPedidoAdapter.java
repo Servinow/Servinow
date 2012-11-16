@@ -7,11 +7,13 @@ import java.util.ArrayList;
 
 import com.servinow.android.ListaPedidoActivity;
 import com.servinow.android.R;
+import com.servinow.android.Util.ImageAsyncHelper;
+import com.servinow.android.Util.ImageAsyncHelper.ImageAsyncHelperCallBack;
 import com.servinow.android.domain.SelectedItem;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,19 +34,16 @@ public class ListaPedidoAdapter extends ArrayAdapter<SelectedItem> {
 	 */
 	static class ListaPedidoViewHolder {
 	  TextView name;
-	  ImageView image;
 	  TextView unitPrice;
 	  TextView quantity;
 	  CheckBox checkBox;
-	}
+	}	
 	
 	private int layoutResourceId;
-	private Context context;
 	
 	public ListaPedidoAdapter(Context context, int layoutResourceId, ArrayList<SelectedItem> objects) {
 		super(context, R.layout.lista_pedido_row, objects);
 		this.layoutResourceId = layoutResourceId;
-		this.context = context;
 	}
 	
 	@Override	
@@ -60,7 +59,6 @@ public class ListaPedidoAdapter extends ArrayAdapter<SelectedItem> {
 		    //ViewHolder pattern
 		    holder = new ListaPedidoViewHolder();
 		    holder.name = (TextView) row.findViewById(R.id.lista_pedido_row_titulo);
-		    holder.image = (ImageView) row.findViewById(R.id.lista_pedido_row_image);
 		    holder.unitPrice = (TextView) row.findViewById(R.id.lista_pedido_row_precio_unidad);
 		    holder.quantity = (TextView) row.findViewById(R.id.lista_pedido_row_cantidad);
 		    holder.checkBox = (CheckBox) row.findViewById(R.id.lista_pedido_row_checkbox);
@@ -109,15 +107,33 @@ public class ListaPedidoAdapter extends ArrayAdapter<SelectedItem> {
 	  
 	    SelectedItem selectedItem = (SelectedItem) getItem(position);
 	    
+	    // Coger imagen
+		if (selectedItem != null) {
+			final ImageView imageViewBitmap = (ImageView) row.findViewById(R.id.lista_pedido_row_image);
+			
+			imageViewBitmap.setVisibility(selectedItem.getImageVisibility());
+			
+			if (imageViewBitmap != null) {			
+				ImageAsyncHelper imageAsyncHelper = new ImageAsyncHelper();
+				
+				Bitmap img = imageAsyncHelper.getBitmap(selectedItem.getImageName(),
+						new ImageAsyncHelperCallBack() {
+					
+					@Override
+					public void onImageSyn(Bitmap img) {
+						imageViewBitmap.setImageBitmap(img);
+					}
+				}, null);
+				
+				if (img != null)
+					imageViewBitmap.setImageBitmap(img);
+			}
+		}
+	    
 	  	// Tag the CheckBox with the Planet it is displaying, so that we can
       	// access the planet in onClick() when the CheckBox is toggled.
       	holder.checkBox.setTag( selectedItem ); 
-	    
 	    holder.name.setText(selectedItem.getName());
-	    // TODO Coger la imagen de una URL
-	    //holder.image.setImageURI(Uri.parse(selectedItem.geturlImage()));
-	    holder.image.setImageResource(R.drawable.meal);
-	    holder.image.setVisibility(selectedItem.getImageVisibility());
 	    holder.unitPrice.setText(selectedItem.getUnitPrice()+" €");
 	    holder.quantity.setText(""+selectedItem.getQuantity());
 	    holder.checkBox.setChecked(selectedItem.isChecked());
