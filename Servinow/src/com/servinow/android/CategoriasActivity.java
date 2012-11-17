@@ -3,7 +3,6 @@ package com.servinow.android;
 import java.util.List;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import android.view.View;
@@ -27,11 +26,6 @@ public class CategoriasActivity extends SherlockActivity {
 	private Categoria [] categorias = new Categoria[0];
 	private int restaurantID;
 	private int placeID;
-	
-	public static enum PARAM {
-		RESTAURANT,
-		PLACE; // MESA
-	}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +34,8 @@ public class CategoriasActivity extends SherlockActivity {
 		Bundle extras = getIntent().getExtras();
 		if(extras != null)
 		{
-			restaurantID = extras.getInt(PARAM.RESTAURANT.toString());
-			placeID = extras.getInt(PARAM.PLACE.toString());
+			restaurantID = extras.getInt(Param.RESTAURANT.toString());
+			placeID = extras.getInt(Param.PLACE.toString());
 			Restaurant restaurant = new RestaurantCache(this).
 					getRestaurantFromCache(restaurantID);
 			List<Categoria> listaCategorias = new CategoryCache(this).
@@ -52,21 +46,6 @@ public class CategoriasActivity extends SherlockActivity {
 			listaCategorias.toArray(categorias);
 			setTitle(restaurant.getName());
 		}
-
-		//TODO obtener las imágenes a partir de su URL
-        Resources res = getResources();		
-		for (Categoria categoria: categorias)
-			categoria.setImagen(res.getDrawable(R.drawable.meal));
-
-        /*String uriString = "http://www.upv.es/noticias-upv/imagenes/crue.png";
-        Uri uri = Uri.parse(uriString);
-		try {
-			InputStream is = getContentResolver().openInputStream(uri);
-			Drawable.createFromStream(is, uri.getPath());
-		} catch (FileNotFoundException e) {
-			Log.d(FileNotFoundException.class.getSimpleName(), "Error al crear el InputStream");
-			e.printStackTrace();
-		}*/
 
         setContentView(R.layout.activity_categorias);
         

@@ -164,4 +164,9 @@ public class Producto {
 	public Categoria getCategoria(){
 		return category;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		return this.getId() == ((Producto) o).getId();
+	}
 }

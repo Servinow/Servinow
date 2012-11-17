@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -21,9 +20,7 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 	
 	//Remove me in the final product START
 	public static enum PARAM {
-		GOTORESTAURANT,
-		RESTAURANT,
-		PLACE; // MESA
+		GOTORESTAURANT;
 	}
 	//Remove me ENDS.
 
@@ -75,8 +72,8 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 	public void onAnswer(int restaurantID, int placeID) {
 		Intent i = new Intent(QRReading.this, CategoriasActivity.class);
 		Bundle b = new Bundle();
-		b.putInt(CategoriasActivity.PARAM.RESTAURANT.toString(), restaurantID);
-		b.putInt(CategoriasActivity.PARAM.PLACE.toString(), placeID);
+		b.putInt(Param.RESTAURANT.toString(), restaurantID);
+		b.putInt(Param.PLACE.toString(), placeID);
 		i.putExtras(b);
 		
 		startActivity(i);
