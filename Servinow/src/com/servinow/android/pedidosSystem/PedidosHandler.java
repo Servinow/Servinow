@@ -46,7 +46,7 @@ public class PedidosHandler {
 		}
 		
 		LineaPedidoCache lineaPedidoCache = new LineaPedidoCache(context);
-		LineaPedido lineaPedido = lineaPedidoCache.getLineaPedido(producto.getId());
+		LineaPedido lineaPedido = lineaPedidoCache.getLineaPedido(producto.getId(), pedidoNoConfirmado.getId());
 		
 		if(lineaPedido == null){
 			// Crear LineaPedido a partir de la cantidad y el producto

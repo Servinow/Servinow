@@ -21,8 +21,8 @@ import com.servinow.android.widget.ProductoAdapter;
 public class ProductosActivity extends SherlockListActivity {
 	
 	private Producto [] productos = new Producto[0];
-	private int restaurantID;
-	private int placeID;
+	public int restaurantID;
+	public int placeID;
 
     @Override
 	protected void onResume() {

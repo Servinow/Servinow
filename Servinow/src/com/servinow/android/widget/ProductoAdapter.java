@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.servinow.android.ProductosActivity;
 import com.servinow.android.R;
 import com.servinow.android.Util.ImageAsyncHelper;
 import com.servinow.android.Util.ImageAsyncHelper.ImageAsyncHelperCallBack;
@@ -28,8 +29,11 @@ public class ProductoAdapter extends ArrayAdapter<Producto> {
 	public ProductoAdapter(Context context, int layoutResourceId, Producto[] objects) {
 		super(context, layoutResourceId, objects);
 		this.layoutResourceId = layoutResourceId;
+		
 		LineaPedidoCache lineaPedidoCache = new LineaPedidoCache(getContext());
-		lineas = lineaPedidoCache.getAllListaPedido();
+		int placeID = ((ProductosActivity) this.getContext()).placeID;
+		int restaurantID =  ((ProductosActivity) this.getContext()).restaurantID;
+		lineas = lineaPedidoCache.getLineasPedidoNotConfirmed(placeID, restaurantID);
 	}
 
 	@Override

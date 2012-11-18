@@ -1,8 +1,8 @@
 package com.servinow.android.dao;
 
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -18,7 +18,7 @@ public class LineaPedidoCache extends ServinowDAOBase<LineaPedido, Integer> {
 		super(context, LineaPedido.class);
 	}
 	
-	public List<LineaPedido> getAllListaPedido(){
+	public List<LineaPedido> getAllLineaPedido(){
 		RuntimeExceptionDao<LineaPedido, Integer> pedidoDAO = getDAO();
 		
 		List<LineaPedido> lineaPedidoList = pedidoDAO.queryForAll();
@@ -70,13 +70,15 @@ public class LineaPedidoCache extends ServinowDAOBase<LineaPedido, Integer> {
 			updateBuilder.where().eq("id", lineaPedidoId);
 			lineaPedidoDAO.update(updateBuilder.prepare());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public LineaPedido getLineaPedido(int productoId){
-		List<LineaPedido> lineaPedidoList = getDAO().queryForEq("producto_id", productoId);
+	public LineaPedido getLineaPedido(int productoId, int pedidoId){
+		HashMap<String, Object> sqlFieldsToMatch = new HashMap<String, Object>();
+	    sqlFieldsToMatch.put("producto_id", productoId);
+	    sqlFieldsToMatch.put("order_id", pedidoId);
+		List<LineaPedido> lineaPedidoList = getDAO().queryForFieldValues(sqlFieldsToMatch);
 		
 		LineaPedido lineaPedido = null;
 		if(!lineaPedidoList.isEmpty()){
@@ -84,5 +86,17 @@ public class LineaPedidoCache extends ServinowDAOBase<LineaPedido, Integer> {
 		}
 		
 		return lineaPedido;
+	}
+	
+	public List<LineaPedido> getLineasPedidoNotConfirmed(int placeId, int restaurantId){
+		Pedido pedido = new PedidoCache(context).getPedidoNotConfirmed(placeId, restaurantId);
+		List<LineaPedido> lineaPedidoList = new ArrayList<LineaPedido>();
+		if(pedido != null){
+			HashMap<String, Object> sqlFieldsToMatch = new HashMap<String, Object>();
+		    sqlFieldsToMatch.put("order_id", pedido.getId());
+			lineaPedidoList = getDAO().queryForFieldValues(sqlFieldsToMatch);
+		}
+		
+		return lineaPedidoList;
 	}
 }
