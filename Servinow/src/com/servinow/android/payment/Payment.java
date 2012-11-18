@@ -3,6 +3,7 @@ package com.servinow.android.payment;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -167,7 +168,16 @@ public class Payment {
 	    @Override
 	    public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-	        builder.setTitle(R.string.paymentmethoddialog_title).setItems(R.array.paymentmethoddialog, new DialogInterface.OnClickListener() {
+	    	
+	    	List<CharSequence> paymentMethods = new LinkedList<CharSequence>();
+	    	paymentMethods.add(getString(R.string.paymentmethoddialog_normal));
+	    	
+	    	if(restaurante.getEmailPayPal() != null) paymentMethods.add(getString(R.string.paymentmethoddialog_paypal));
+	    	
+	    	CharSequence[] paymentMethodsSupported = new CharSequence[paymentMethods.size()];
+	    	paymentMethods.toArray(paymentMethodsSupported);
+	    	
+	        builder.setTitle(R.string.paymentmethoddialog_title).setItems(paymentMethodsSupported, new DialogInterface.OnClickListener() {
 	               public void onClick(DialogInterface dialog, int which) {
 	            	   switch(which){
 		            	   case 0:

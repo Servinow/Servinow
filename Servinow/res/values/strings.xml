@@ -36,6 +36,20 @@
 	<string name="mainactivity_directtorestaurant">Ir directamente a un restaurante (only for TEST)</string>
 	<string name="mainactivity_welcome">Bienvenido a Servinow. Lea el código QR de su mesa o busque restaurantes cercanos en nuestro mapa.</string>
 	<string name="mainactivity_gotomap">Ver restaurantes Servinow cercanos</string>
+
+	<string name="checkstateactivity_check">Estado del Pedido</string>
+    <string name="checkstateactivity_cancelar">Cancelar</string>
+    <string name="checkstateactivity_servido">Servido</string>
+    <string name="checkstateactivity_encola">En cola...</string>
+    <string name="checkstateactivity_encocina">En cocina...</string>
+    <string name="checkstateactivity_preparado">Preparado</string>
+    <string name="checkstateactivity_cancelar_elem">¿Cancelar este plato?</string>
+    <string name="checkstateactivity_si">Sí</string>
+    <string name="checkstateactivity_no">No</string>
+    <string name="checkstate_button_ticket">Pagar</string>
+    
+
+
 	<string name="activity_ticket_title">Ticket</string>
 	<string name="activity_ticket_unit_price_label">"Precio unitario: "</string>
 	<string name="activity_ticket_quantity_label">"x"</string>
