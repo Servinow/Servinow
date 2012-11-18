@@ -131,7 +131,7 @@ public class TicketActivity extends SherlockFragmentActivity implements IPayment
 	public void onPaymentProcess(Method method) {
 		switch(method){
 		case NORMAL:
-			enableMenuOptions(false);
+			menuActionBar.findItem(R.id.itemPay).setEnabled(false);
 			Toast.makeText(this, R.string.activity_ticket_normalpaymentinprocess, Toast.LENGTH_LONG).show();
 			break;
 		case PAYPAL:
@@ -142,11 +142,13 @@ public class TicketActivity extends SherlockFragmentActivity implements IPayment
 
 	@Override
 	public void onPaymentCanceled(Method method) {
+		enableMenuOptions(true);
 		Toast.makeText(this, R.string.activity_ticket_paymentcancelled, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onPaymentFailure(Method method) {
+		enableMenuOptions(true);
 		Toast.makeText(this, R.string.activity_ticket_paymentfailure, Toast.LENGTH_LONG).show();
 	}
 }
