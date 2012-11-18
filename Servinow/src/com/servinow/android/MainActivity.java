@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.servinow.android.Util.Util;
 
 public class MainActivity extends SherlockActivity {	
 
@@ -21,6 +23,11 @@ public class MainActivity extends SherlockActivity {
 
 			@Override
 			public void onClick(View v) {
+				if(!Util.isOnline(MainActivity.this)) {
+					Toast.makeText(MainActivity.this, "Se requiere conxión a internet.", Toast.LENGTH_LONG).show();
+					return;
+				}
+				
 				startActivity(new Intent(MainActivity.this, QRReading.class));
 				
 			}
@@ -34,6 +41,11 @@ public class MainActivity extends SherlockActivity {
 
 			@Override
 			public void onClick(View v) {
+				if(!Util.isOnline(MainActivity.this)) {
+					Toast.makeText(MainActivity.this, "Se requiere conxión a internet.", Toast.LENGTH_LONG).show();
+					return;
+				}
+				
 				Intent i = new Intent(MainActivity.this, QRReading.class);
 				Bundle b = new Bundle();
 				b.putBoolean(QRReading.PARAM.GOTORESTAURANT.toString(), true);
