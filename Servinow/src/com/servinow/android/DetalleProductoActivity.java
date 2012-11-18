@@ -62,7 +62,7 @@ public class DetalleProductoActivity extends SherlockActivity {
 				imageView.setImageBitmap(img);
 			
 			TextView textViewPrecio = (TextView) findViewById(R.id.textViewPrecio);
-			textViewPrecio.setText(String.valueOf(producto.getPrecio()) + " €");
+			textViewPrecio.setText(String.format("%.2f €", producto.getPrecio()));
 			
 			TextView textViewDisponible = (TextView) findViewById(R.id.textViewDisponibilidad);
 			Button buttonAdd = (Button) findViewById(R.id.buttonAdd);

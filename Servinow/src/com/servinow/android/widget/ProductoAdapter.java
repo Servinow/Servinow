@@ -72,7 +72,7 @@ public class ProductoAdapter extends ArrayAdapter<Producto> {
 
 			TextView textViewPrecio = (TextView)view.findViewById(R.id.textViewPrecio);
 			if (textViewPrecio != null)
-				textViewPrecio.setText(Double.toString(producto.getPrecio()) + " €");
+				textViewPrecio.setText(String.format("%.2f €", producto.getPrecio()));
 			
 			TextView textViewCantidad = (TextView)view.findViewById(R.id.textViewCantidad);
 				
