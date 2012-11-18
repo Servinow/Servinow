@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.servinow.android.R;
 import com.servinow.android.domain.LineaPedido;
 import com.servinow.android.domain.SelectedItem;
@@ -118,6 +119,8 @@ public class ListaPedidoActivity extends SherlockListActivity {
 			((Button) findViewById(R.id.lista_pedido_button_cancel)).setEnabled(false);
 			((Button) findViewById(R.id.lista_pedido_button_confirm)).setEnabled(false);
 		}
+		
+		getSupportActionBar().setHomeButtonEnabled(true);
 	}
 	
     @Override
@@ -392,5 +395,25 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	    	alert.show();
 	    }
 	};
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case android.R.id.home:
+    		// app icon in action bar clicked; go home
+    		Intent i = new Intent(this, CategoriasActivity.class);
+    		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    		
+    		Bundle b = new Bundle();
+    		b.putInt(Param.RESTAURANT.toString(), restaurantID);
+    		b.putInt(Param.PLACE.toString(), placeID);
+    		i.putExtras(b);
+    		
+    		startActivity(i);
+    		return true;
+    	default:
+    		return super.onOptionsItemSelected(item);
+    	}
+    }
 	
 }

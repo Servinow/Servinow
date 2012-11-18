@@ -3,6 +3,7 @@ package com.servinow.android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.servinow.android.Util.ImageAsyncHelper;
 import com.servinow.android.Util.ImageAsyncHelper.ImageAsyncHelperCallBack;
 import com.servinow.android.dao.ProductCache;
@@ -117,5 +119,27 @@ public class DetalleProductoActivity extends SherlockActivity {
     	    	alert.show();
             }
         });
+        
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case android.R.id.home:
+    		// app icon in action bar clicked; go home
+    		Intent i = new Intent(this, CategoriasActivity.class);
+    		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    		
+    		Bundle b = new Bundle();
+    		b.putInt(Param.RESTAURANT.toString(), restaurantID);
+    		b.putInt(Param.PLACE.toString(), placeID);
+    		i.putExtras(b);
+    		
+    		startActivity(i);
+    		return true;
+    	default:
+    		return super.onOptionsItemSelected(item);
+    	}
     }
 }
