@@ -26,20 +26,5 @@ public class MainActivity extends SherlockActivity {
 		});
 
 		findViewById(R.id.mainactivity_gotomap).setEnabled(false);
-
-
-		Button directToRestaurantButton = (Button) findViewById(R.id.mainactivity_directtorestaurant);
-		directToRestaurantButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(MainActivity.this, QRReading.class);
-				Bundle b = new Bundle();
-				b.putBoolean(QRReading.PARAM.GOTORESTAURANT.toString(), true);
-				i.putExtras(b);
-
-				startActivity(i);
-			}
-		});
 	}
 }

@@ -15,14 +15,7 @@ import com.servinow.android.restaurantCacheSyncSystem.CacheRestaurantSystem;
 public class QRReading extends SherlockActivity implements QRResultCallback{
 
 	private QRReadingSystem qrReadingSystem;
-	private CacheRestaurantSystem startRestDEBUG;
 	private View loadingView;
-	
-	//Remove me in the final product START
-	public static enum PARAM {
-		GOTORESTAURANT;
-	}
-	//Remove me ENDS.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +23,6 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 		setContentView(R.layout.qrreading);
 		
 		loadingView = findViewById(R.id.QRReading_loading);
-		
-		//Remove me in the final product START
-		Bundle extras = getIntent().getExtras();
-		if(extras != null && extras.getBoolean(PARAM.GOTORESTAURANT.toString(), false)) {
-			startRestDEBUG = new CacheRestaurantSystem(this, 1, 1, this);
-			return;
-		}//Remove me ENDS.
 
 		/**
 		 * The activity have to be in portrait mode all time.
@@ -52,9 +38,6 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 		super.onPause();
 		if(qrReadingSystem != null)
 			qrReadingSystem.releaseCamera();
-		
-		if(startRestDEBUG != null)
-			startRestDEBUG.stop();
 	}
 
 	@Override
@@ -62,9 +45,6 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 		super.onResume();
 		if(qrReadingSystem != null)
 			qrReadingSystem.start();
-		
-		if(startRestDEBUG != null)
-			startRestDEBUG.start();
 	}
 
 	//http://stackoverflow.com/questions/10407159/android-how-to-manage-start-activity-for-result
@@ -86,10 +66,8 @@ public class QRReading extends SherlockActivity implements QRResultCallback{
 		
 		loadingView.setVisibility(View.INVISIBLE);
 		
-		if(qrReadingSystem != null) {
-			qrReadingSystem.releaseCamera();
-			qrReadingSystem.start();
-		}
+		qrReadingSystem.releaseCamera();
+		qrReadingSystem.start();
 	}
 
 	@Override
