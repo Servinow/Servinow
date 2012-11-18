@@ -1,17 +1,17 @@
-package com.servinow.payment;
+package com.servinow.android.payment;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.actionbarsherlock.R;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.paypal.android.MEP.PayPal;
 import com.paypal.android.MEP.PayPalActivity;
 import com.paypal.android.MEP.PayPalInvoiceData;
 import com.paypal.android.MEP.PayPalInvoiceItem;
 import com.paypal.android.MEP.PayPalPayment;
+import com.servinow.android.R;
 import com.servinow.android.dao.PedidoCache;
 import com.servinow.android.domain.LineaPedido;
 import com.servinow.android.domain.Pedido;

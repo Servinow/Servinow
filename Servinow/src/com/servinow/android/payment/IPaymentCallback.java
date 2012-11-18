@@ -1,5 +1,5 @@
 
-package com.servinow.payment;
+package com.servinow.android.payment;
 
 import android.content.Intent;
 
