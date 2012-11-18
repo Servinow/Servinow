@@ -41,9 +41,9 @@
 	<string name="activity_ticket_quantity_label">"x"</string>
 	<string name="activity_ticket_menu_back">Volver</string>
 	<string name="activity_ticket_menu_pay">Pagar</string>
-	<string name="activity_ticket_subtotal">Sub total: %1$d€</string>
-	<string name="activity_ticket_tax">IVA(%1$d%%): %2$d€</string>
-	<string name="activity_ticket_total">Total: %1$d€</string>
+	<string name="activity_ticket_subtotal">Sub total: %1$.2f€</string>
+	<string name="activity_ticket_tax">IVA(%1$d%%): %2$.2f€</string>
+	<string name="activity_ticket_total">Total: %1$.2f€</string>
 	<string name="activity_ticket_normalpaymentinprocess">La cuenta ha sido solicitada. Espere al cobrador para finalizar el pago.</string>
 	<string name="activity_ticket_paymentfailure">El pago no ha sido efectuado con éxito.</string>
 	<string name="activity_ticket_paymentcancelled">Pago cancelado.</string>
