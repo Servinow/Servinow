@@ -21,8 +21,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <uses-library android:name="com.google.android.maps" />
 
+        <uses-library android:name="com.google.android.maps" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
@@ -36,19 +36,17 @@
             android:name=".ListaPedidoActivity"
             android:label="@string/lista_pedido_title" >
         </activity>
-        <activity
+        <activity 
             android:name=".TicketActivity"
-            android:label="@string/activity_ticket_title"
-            android:uiOptions="splitActionBarWhenNarrow" >
-        </activity>
-        <activity android:name="QRReading" >
-        </activity>
-        <activity android:name="CategoriasActivity" >
-        </activity>
-        <activity android:name="ProductosActivity" >
-        </activity>
-        <activity android:name="DetalleProductoActivity" >
-        </activity>
+			android:label="@string/activity_ticket_title" 
+			android:uiOptions="splitActionBarWhenNarrow" >
+		</activity>
+        <activity android:name="QRReading"></activity>
+        <activity android:name=".CheckOrderStateActivity"></activity>
+        <activity android:name="CategoriasActivity"></activity>
+        <activity android:name="ProductosActivity"></activity>
+        <activity android:name="DetalleProductoActivity"></activity>
+        
         <activity
             android:name="com.paypal.android.MEP.PayPalActivity"
             android:configChanges="keyboardHidden|orientation"

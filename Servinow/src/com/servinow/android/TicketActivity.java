@@ -23,6 +23,7 @@ import com.servinow.android.widget.PurchasedItemAdapter;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,7 +44,9 @@ public class TicketActivity extends SherlockFragmentActivity implements IPayment
 
 		if (parameters != null) {
 
-			restaurantID = parameters.getInt("restaurantID");
+		//	restaurantID = parameters.getInt("restaurantID");
+			restaurantID = parameters.getInt(Param.RESTAURANT.toString());
+			Log.d("restaurantID: ",""+restaurantID+"---3---");
 			pedidos = new PedidoCache(this).getPedidosNoPagados(restaurantID);
 			restaurant = new RestaurantCache(this).getRestaurantFromCache(restaurantID);
 			
