@@ -9,6 +9,10 @@ public class OrdersState {
 	public int round = 1;
 	public Boolean roundmark=false;
 	public int lineaPedidoId;
+	public int productoId;
+	public int pedidoId;
 	public int cantidad=0;
 	public String imageName;
+	public Boolean pagado=false;
+	public LineaPedido lp;
 }

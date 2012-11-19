@@ -38,235 +38,247 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
 
 	private final Context context;
 	private final ArrayList<OrdersState> orders;
-//	private final String[] platos;
-//	public Boolean res = false;
-	private OrdersState ord=null;
-	public HashMap<Integer, Integer> lineasCant=new HashMap<Integer, Integer>();
-	
+	// private final String[] platos;
+	// public Boolean res = false;
+	private OrdersState ord = null;
+	public HashMap<Integer, Integer> lineasCant = new HashMap<Integer, Integer>();
+
 	protected Handler taskHandler = new Handler();
 	protected Boolean isComplete = false;
-	public Boolean flagTimer=false;
-	public int countOrders=0;
-	public int countChanges=0;
-	
+	public Boolean flagTimer = false;
+	public int countOrders = 0;
+	public int countChanges = 0;
+
 	static class ViewHolder {
-		    TextView name;
-		    TextView state;
-		    ImageView image;
-		    TextView ronda;
-        public ImageButton deleteButtom;
+		TextView name;
+		TextView state;
+		ImageView image;
+		TextView ronda;
+		public ImageButton deleteButtom;
 	}
-	
+
 	public CheckStateArrayAdapter(Context context, ArrayList<OrdersState> orders) {
 		super(context, -1, orders);
 		this.context = context;
 		this.orders = orders;
-	//	this.platos = platos;
-		countOrders=orders.size();
-		countChanges=countOrders*3;
+		// this.platos = platos;
+		countOrders = orders.size();
+		countChanges = countOrders * 3;
 		setLineasCantidad();
 		setTimer(1000);
 	}
-	
+
 	@Override
 	public int getViewTypeCount() {
-	  return 2;
+		return 2;
 	}
-	
+
 	@Override
 	public int getItemViewType(int position) {
-	  if(orders.get(position).roundmark)
-	    return 1;
-	  else
-	    return 0;
+		if (orders.get(position).roundmark)
+			return 1;
+		else
+			return 0;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View rowView = convertView;
-		ViewHolder holder=new ViewHolder();
-		
+		ViewHolder holder = new ViewHolder();
+
 		ord = orders.get(position);
-		if(rowView==null){
-		  LayoutInflater inflater = ((Activity)getContext()).getLayoutInflater();	
-		  if(!ord.roundmark){
-		    rowView = inflater.inflate(R.layout.list_check_state, parent, false);
-	      holder.name = (TextView) rowView.findViewById(R.id.TextViewCheckStateName);
-	      holder.state = (TextView) rowView.findViewById(R.id.TextViewCheckStateState);
-	      holder.image = (ImageView) rowView.findViewById(R.id.ImageViewCheckState);
-	      holder.deleteButtom = (ImageButton) rowView.findViewById(R.id.CheckState_row_Cancel);
-		  }else{
-		    rowView = inflater.inflate(R.layout.list_check_state_round, parent, false);
-	      holder.ronda = (TextView) rowView.findViewById(R.id.TextViewCheckStateRound);
-		  }
-		  rowView.setTag(holder);
-		}else{
-		  holder = (ViewHolder) rowView.getTag();
+		if (rowView == null) {
+			LayoutInflater inflater = ((Activity) getContext())
+					.getLayoutInflater();
+			if (!ord.roundmark) {
+				rowView = inflater.inflate(R.layout.list_check_state, parent,
+						false);
+				holder.name = (TextView) rowView
+						.findViewById(R.id.TextViewCheckStateName);
+				holder.state = (TextView) rowView
+						.findViewById(R.id.TextViewCheckStateState);
+				holder.image = (ImageView) rowView
+						.findViewById(R.id.ImageViewCheckState);
+				holder.deleteButtom = (ImageButton) rowView
+						.findViewById(R.id.CheckState_row_Cancel);
+			} else {
+				rowView = inflater.inflate(R.layout.list_check_state_round,
+						parent, false);
+				holder.ronda = (TextView) rowView
+						.findViewById(R.id.TextViewCheckStateRound);
+			}
+			rowView.setTag(holder);
+		} else {
+			holder = (ViewHolder) rowView.getTag();
 		}
-		
-		
-		if(!ord.roundmark){
-		  holder.name.setText(ord.name);
 
-		  if(ord.state == Estado.EN_COLA){
-		    holder.state.setTextColor(Color.argb(255, 255, 0, 0));
-		    holder.state.setText(R.string.checkstateactivity_encola);
-		  }
-		  else if(ord.state == Estado.PREPARANDO){
-		    holder.state.setTextColor(Color.argb(255, 187, 187, 0));
-		    holder.state.setText(R.string.checkstateactivity_encocina);
-		  }
-		  else if(ord.state == Estado.LISTO){
-		    holder.state.setTextColor(Color.argb(255, 66, 204, 68));
-		    holder.state.setText(R.string.checkstateactivity_preparado);
-		  }else{
-		    holder.state.setTextColor(Color.argb(255, 0, 0, 0));
-		    holder.state.setText(R.string.checkstateactivity_servido);
-		  }
+		if (ord.pagado) {
+			holder.ronda.setText(R.string.checkstate_pagado);
+		} else if (!ord.roundmark) {
 
-		  if(ord.image == null) {
-		    ImageAsyncHelper imageAsyncHelper = new ImageAsyncHelper();
-		    ord.image = imageAsyncHelper.getBitmap(ord.imageName, new ImageAsyncHelperCallBack() {
-		      ImageView imgView;
+			holder.name.setText(ord.name);
+			if (ord.state == Estado.EN_COLA) {
+				holder.state.setTextColor(Color.argb(255, 255, 0, 0));
+				holder.state.setText(R.string.checkstateactivity_encola);
+			} else if (ord.state == Estado.PREPARANDO) {
+				holder.state.setTextColor(Color.argb(255, 187, 187, 0));
+				holder.state.setText(R.string.checkstateactivity_encocina);
+			} else if (ord.state == Estado.LISTO) {
+				holder.state.setTextColor(Color.argb(255, 66, 204, 68));
+				holder.state.setText(R.string.checkstateactivity_preparado);
+			} else {
+				holder.state.setTextColor(Color.argb(255, 0, 0, 0));
+				holder.state.setText(R.string.checkstateactivity_servido);
+			}
 
-		      public ImageAsyncHelperCallBack setImageView(ImageView imgView) {
-		        this.imgView = imgView;
-		        return this;
-		      }
+			if (ord.image == null) {
+				ImageAsyncHelper imageAsyncHelper = new ImageAsyncHelper();
+				ord.image = imageAsyncHelper.getBitmap(ord.imageName,
+						new ImageAsyncHelperCallBack() {
+							ImageView imgView;
 
-		      @Override
-		      public void onImageSyn(Bitmap img) {
-		        imgView.setImageBitmap(img);                
-		      }
-		    }.setImageView(holder.image), null);
-		  }
-		  holder.image.setImageBitmap(ord.image);
+							public ImageAsyncHelperCallBack setImageView(
+									ImageView imgView) {
+								this.imgView = imgView;
+								return this;
+							}
 
-		  holder.deleteButtom.setTag(position);
+							@Override
+							public void onImageSyn(Bitmap img) {
+								imgView.setImageBitmap(img);
+							}
+						}.setImageView(holder.image), null);
+			}
+			holder.image.setImageBitmap(ord.image);
 
-		  if(ord.state != Estado.EN_COLA)
-		    holder.deleteButtom.setEnabled(false);
-		  else
-			  holder.deleteButtom.setEnabled(true);
+			// holder.deleteButtom.setTag(position);
 
-		  holder.deleteButtom.setOnClickListener(
-		                                         new Button.OnClickListener() {
-		                                           @Override
-		                                           public void onClick(View v) {
-		                                             callDialog(context,v);
+			if (ord.state != Estado.EN_COLA)
+				holder.deleteButtom.setEnabled(false);
+			else
+				holder.deleteButtom.setEnabled(true);
+			final int pos = position;
+			holder.deleteButtom
+					.setOnClickListener(new Button.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							callDialog(context, pos);
 
-		                                           }
-		                                         }
-		      );
+						}
+					});
 
+		} else {
+			holder.ronda.setText(" - Ronda " + ord.round + " - ");
 		}
-		else{			
-			holder.ronda.setText(" - Ronda "+ord.round+" - ");
-	//		Log.d("+++++","++++");
-		}
-		
-		
-		
-	//	Log.d("+++++","++++");
+
 		return rowView;
 	}
-	
-	
-	public void callDialog(Context ctx, View v){
-		final View vv = v;
+
+	public void callDialog(Context ctx, int pos) {
+		final int position = pos;
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
- 	   	
- 	   
-		
-		builder.setMessage(ctx.getString(R.string.checkstateactivity_cancelar_elem));
-		builder.setPositiveButton((ctx.getString(R.string.checkstateactivity_si)), new DialogInterface.OnClickListener() {						
-			
-			public void onClick(DialogInterface arg0, int arg1) {
-				Integer index = (Integer) vv.getTag();
-     		   	orders.remove(index.intValue());  
-     		   	notifyDataSetChanged();
-     		   	deleteInDB(orders.get(index));
-			}						
-		});
-		builder.setNegativeButton(ctx.getString(R.string.checkstateactivity_no), new DialogInterface.OnClickListener() {						
-			
-			public void onClick(DialogInterface arg0, int arg1){
-				
-			}
-		});
-		
+
+		builder.setMessage(ctx
+				.getString(R.string.checkstateactivity_cancelar_elem));
+		builder.setPositiveButton(
+				(ctx.getString(R.string.checkstateactivity_si)),
+				new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface arg0, int arg1) {
+					//	Integer index = (Integer) vv.getTag();
+						deleteInDB(orders.get(position));
+						orders.remove(position);
+						notifyDataSetChanged();
+					}
+				});
+		builder.setNegativeButton(
+				ctx.getString(R.string.checkstateactivity_no),
+				new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface arg0, int arg1) {
+
+					}
+				});
+
 		AlertDialog alert = builder.create();
 		alert.show();
-		
+
 	}
-	
-	public void deleteInDB(OrdersState ord){
-		//TODO BORRAR EN LA BASE DE DATOS
+
+	public void deleteInDB(OrdersState ord) {
+		// TODO BORRAR EN LA BASE DE DATOS
 		LineaPedidoCache lpCach = new LineaPedidoCache(context);
-	//	LineaPedido lp = new LineaPedido();
-	//	lp = lpCach.getLineaPedido(ord.productoId);
-		int cant = lineasCant.get(ord.lineaPedidoId);
-		if(cant<=1)
-			lpCach.deleteLineaPedido(ord.lineaPedidoId);
-		else
-			lpCach.updateQuantityLineaPedido(ord.lineaPedidoId, ord.cantidad-1);
-		lineasCant.remove(ord.lineaPedidoId);
-		lineasCant.put(ord.lineaPedidoId, cant-1);
+		// LineaPedido lp = new LineaPedido();
+		// lp = lpCach.getLineaPedido(ord.productoId);
+		/*
+		 * int cant = lineasCant.get(ord.lineaPedidoId); if(cant<=1)
+		 * lpCach.deleteLineaPedido(ord.lineaPedidoId); else
+		 * lpCach.updateQuantityLineaPedido(ord.lineaPedidoId, ord.cantidad-1);
+		 * lineasCant.remove(ord.lineaPedidoId);
+		 * lineasCant.put(ord.lineaPedidoId, cant-1);
+		 */
+
+		/*
+		 * LineaPedido lp = lpCach.getLineaPedido(ord.productoId, ord.pedidoId);
+		 * int cantidad = lp.getCantidad(); Log.d("ord.lineaPedidoId: ","");
+		 * Log.d("--casa---","---"); Log.d("     lp:"+lp.getId(),"");
+		 * lpCach.updateQuantityLineaPedido(ord.lineaPedidoId, cantidad-1);
+		 */
+		int cantidad = ord.lp.getCantidad();
 		
+		if(cantidad-1<=0)
+			lpCach.deleteLineaPedido(ord.lp.getId());
+		else
+			lpCach.updateQuantityLineaPedido(ord.lp.getId(), cantidad - 1);
+			
+
 	}
-	
-	protected void setTimer( long time )
-    {
-        final long elapse = 1000+ (int)(Math.random()*2000);
-        Runnable t = new Runnable() {
-            public void run()
-            {
-                runNextTask();
-                	if(!flagTimer)
-                		taskHandler.postDelayed( this, elapse );
-                	
-                
-            }
-        };
-    	taskHandler.postDelayed( t, elapse );
-    }
-     
-    protected void runNextTask()
-    {
-        // run my task.
-        // determine isComplete.
-    	int nOrder = (int)(Math.random()*orders.size());
-    	if(orders.size()>0){
-    		while(orders.get(nOrder).roundmark==true)
-    			nOrder = (int)(Math.random()*orders.size());
-    	
-    		if(orders.get(nOrder).state == Estado.EN_COLA){
-    			orders.get(nOrder).state=Estado.PREPARANDO;
-    			countChanges--;
-    		}else if(orders.get(nOrder).state == Estado.PREPARANDO){
-    			orders.get(nOrder).state=Estado.LISTO;
-    			countChanges--;
-    		}else if(orders.get(nOrder).state == Estado.LISTO){
-    			orders.get(nOrder).state=Estado.SERVIDO;
-    			countChanges--;
-    		}
-    	}
-    	notifyDataSetChanged();
-    	if(countChanges<=0)
-    		flagTimer=true;
-    }
-    
-    public void setLineasCantidad(){
-    	int prevLn = -1;
-    	for(int i=0; i<orders.size(); i++){
-    		if(prevLn!=orders.get(i).lineaPedidoId){
-    			prevLn=orders.get(i).lineaPedidoId;
-    			lineasCant.put(prevLn, orders.get(i).cantidad);
-    		}
-    	}
-    }
-	
-	
+
+	protected void setTimer(long time) {
+		final long elapse = 1000 + (int) (Math.random() * 2000);
+		Runnable t = new Runnable() {
+			public void run() {
+				runNextTask();
+				if (!flagTimer)
+					taskHandler.postDelayed(this, elapse);
+
+			}
+		};
+		taskHandler.postDelayed(t, elapse);
+	}
+
+	protected void runNextTask() {
+		// run my task.
+		// determine isComplete.
+		int nOrder = (int) (Math.random() * orders.size());
+		if (orders.size() > 0) {
+			while (orders.get(nOrder).roundmark == true)
+				nOrder = (int) (Math.random() * orders.size());
+
+			if (orders.get(nOrder).state == Estado.EN_COLA) {
+				orders.get(nOrder).state = Estado.PREPARANDO;
+				countChanges--;
+			} else if (orders.get(nOrder).state == Estado.PREPARANDO) {
+				orders.get(nOrder).state = Estado.LISTO;
+				countChanges--;
+			} else if (orders.get(nOrder).state == Estado.LISTO) {
+				orders.get(nOrder).state = Estado.SERVIDO;
+				countChanges--;
+			}
+		}
+		notifyDataSetChanged();
+		if (countChanges <= 0)
+			flagTimer = true;
+	}
+
+	public void setLineasCantidad() {
+		int prevLn = -1;
+		for (int i = 0; i < orders.size(); i++) {
+			if (prevLn != orders.get(i).lineaPedidoId) {
+				prevLn = orders.get(i).lineaPedidoId;
+				lineasCant.put(prevLn, orders.get(i).cantidad);
+			}
+		}
+	}
+
 }
-
-
