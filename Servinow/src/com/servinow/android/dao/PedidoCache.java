@@ -67,6 +67,16 @@ public class PedidoCache extends ServinowDAOBase<Pedido, Integer> {
 		return pedido;
 	}
 	
+	public List<Pedido> getAllPedidosConfirmed(int place, int restaurant){
+		
+		HashMap<String, Object> sqlFieldsToMatch = new HashMap<String, Object>();
+	    sqlFieldsToMatch.put("confirmado", true);
+	    sqlFieldsToMatch.put("restaurant_id", restaurant);
+	    sqlFieldsToMatch.put("place_id", place);
+		
+	     return getDAO().queryForFieldValues(sqlFieldsToMatch);
+	}
+	
 	public Pedido getPedidoConfirmed(){
 		RuntimeExceptionDao<Pedido, Integer> pedidoDAO = getDAO();
 		

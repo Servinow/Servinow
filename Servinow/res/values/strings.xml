@@ -47,6 +47,7 @@
     <string name="checkstateactivity_si">Sí</string>
     <string name="checkstateactivity_no">No</string>
     <string name="checkstate_button_ticket">Pagar</string>
+    <string name="checkstate_pagado">- Pedidos Pagados -</string>
     
 
 

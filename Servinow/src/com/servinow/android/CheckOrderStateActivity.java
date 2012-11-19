@@ -100,7 +100,8 @@ public class CheckOrderStateActivity extends SherlockActivity {
     	
    
     	PedidoCache pd = new PedidoCache(this);
-    	listaPedidos = pd.getAllPedidosConfirmados();
+   // 	listaPedidos = pd.getAllPedidosConfirmados();
+    	listaPedidos = pd.getAllPedidosConfirmed(placeID, restaurantID);
     }
     
     public void populateOrdersB(){
@@ -124,22 +125,18 @@ public class CheckOrderStateActivity extends SherlockActivity {
     
     public void prepareToDisplay(){
     	
-  /*  	Bitmap mIcon_val=null;
-    	URL newurl;
-		try {
-			newurl = new URL("http://www.recetasdiarias.com/wp-content/uploads/2010/01/tarta-de-queso.jpg");
-			mIcon_val = BitmapFactory.decodeStream(newurl.openConnection() .getInputStream()); 
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} */
-    	
+    	Boolean pagado=false;
     	
     	for(int i=listaPedidos.size()-1; i>=0; i--){
+    		if(!pagado){
+    			if(listaPedidos.get(i).isPagado()){
+    				OrdersState ordpd= new OrdersState();
+    				ordpd.round=listaPedidos.get(i).getId();
+    				ordpd.pagado=true;
+    				ordersToDisplay.add(ordpd);
+    				pagado=true;
+    			}
+    		}
     		OrdersState ord= new OrdersState();
     		ord.round=listaPedidos.get(i).getId();
     		ord.roundmark=true;
@@ -151,13 +148,16 @@ public class CheckOrderStateActivity extends SherlockActivity {
     			for(int j=0; j<lp.getCantidad(); j++){
     				OrdersState ordp = new OrdersState();
     				ordp.roundmark=false;
+    				ordp.pagado=false;
+    				ordp.pedidoId=listaPedidos.get(i).getId();
+    				ordp.productoId=lp.getProducto().getId();
     				ordp.name = lp.getProducto().getNombre();
     				ordp.state = lp.getEstado();
     				ordp.lineaPedidoId=lp.getId();
     				ordp.cantidad=lp.getCantidad();
-    				
     				ordp.imageName = lp.getProducto().getImageName();
     				ordp.image = null;
+    				ordp.lp = lp;
     				
     				ordersToDisplay.add(ordp);
     				countOrders++;

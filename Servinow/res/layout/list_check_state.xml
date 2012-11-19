@@ -28,13 +28,18 @@
                 android:layout_height="wrap_content"
                 android:text="Carcamusas Toledanas" />
 
-            <TextView
-                android:id="@+id/TextViewCheckStateState"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/checkstateactivity_encola"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="#FF0000" />
+           
+                <TextView
+                    android:id="@+id/TextViewCheckStateState"
+                    android:layout_width="71dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkstateactivity_encola"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#FF0000" />
+
+                
+
+         
         </LinearLayout>
 
         <RelativeLayout
