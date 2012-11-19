@@ -61,9 +61,9 @@ public class PurchasedItemAdapter extends ArrayAdapter<LineaPedido> {
     LineaPedido lineaPedido = getItem(position);
     Producto producto = lineaPedido.getProducto();
     holder.name.setText(producto.getNombre());
-    holder.unitPrice.setText(producto.getPrecio()+"€");
+    holder.unitPrice.setText(String.format("%.2f€", producto.getPrecio()));
     holder.qty.setText(""+lineaPedido.getCantidad());
-    holder.price.setText(lineaPedido.getTotal()+"€");
+    holder.price.setText(String.format("%.2f€", lineaPedido.getTotal()));
     
     return row;
   }
