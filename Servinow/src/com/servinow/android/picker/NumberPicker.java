@@ -23,7 +23,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.method.NumberKeyListener;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -112,6 +112,18 @@ public class NumberPicker extends LinearLayout implements OnClickListener,
     public NumberPicker(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
+    public static boolean isNumeric(String str)  
+    {  
+      try  
+      {  
+        int integer = Integer.parseInt(str);  
+      }  
+      catch(NumberFormatException nfe)  
+      {  
+        return false;  
+      }  
+      return true;  
+    }
 
     @SuppressWarnings({"UnusedDeclaration"})
     public NumberPicker(Context context, AttributeSet attrs, int defStyle) {
@@ -135,6 +147,25 @@ public class NumberPicker extends LinearLayout implements OnClickListener,
         mText.setOnFocusChangeListener(this);
         mText.setFilters(new InputFilter[] {inputFilter});
         mText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        mText.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_0 || keyCode == KeyEvent.KEYCODE_1 || keyCode == KeyEvent.KEYCODE_2
+                        || keyCode == KeyEvent.KEYCODE_3 || keyCode == KeyEvent.KEYCODE_4 || keyCode == KeyEvent.KEYCODE_5
+                        || keyCode == KeyEvent.KEYCODE_6 || keyCode == KeyEvent.KEYCODE_7 || keyCode == KeyEvent.KEYCODE_8
+                        || keyCode == KeyEvent.KEYCODE_9) {
+                    // update value if it is a number but proceed for further processing too
+                	String str = mText.getText().toString();
+                    if(isNumeric(str)){
+                    	int number = Integer.parseInt(str);
+                    	if(number != 0){
+                    		mCurrent = number;
+                    	}
+                    } 
+                }
+                return false;
+            }
+        });
 
         if (!isEnabled()) {
             setEnabled(false);
@@ -385,7 +416,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener,
              * as the user might want to delete some numbers
              * and then type a new number.
              */
-            if (val > mEnd) {
+            if (val > mEnd || val == 0) {
                 return "";
             } else {
                 return filtered;
