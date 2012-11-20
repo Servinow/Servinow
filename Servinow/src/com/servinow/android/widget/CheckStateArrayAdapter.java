@@ -115,7 +115,7 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
 		if (ord.pagado) {
 			holder.ronda.setText(R.string.checkstate_pagado);
 		} else if (!ord.roundmark) {
-
+			
 			holder.name.setText(ord.name);
 			if (ord.state == Estado.EN_COLA) {
 				holder.state.setTextColor(Color.argb(255, 255, 0, 0));

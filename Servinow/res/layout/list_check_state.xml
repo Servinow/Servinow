@@ -24,10 +24,10 @@
 
             <TextView
                 android:id="@+id/TextViewCheckStateName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:lines="2"
                 android:text="Carcamusas Toledanas" />
-
            
                 <TextView
                     android:id="@+id/TextViewCheckStateState"
