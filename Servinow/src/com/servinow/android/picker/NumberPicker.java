@@ -47,7 +47,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener,
         OnFocusChangeListener, OnLongClickListener {
 
     private static final String TAG = "NumberPicker";
-    private static final int DEFAULT_MAX = 100;
+    private static final int DEFAULT_MAX = 30;
     private static final int DEFAULT_MIN = 1;
 
     public interface OnChangedListener {
