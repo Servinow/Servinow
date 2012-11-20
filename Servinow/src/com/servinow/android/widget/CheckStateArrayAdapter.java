@@ -131,25 +131,22 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
 				holder.state.setText(R.string.checkstateactivity_servido);
 			}
 
-			if (ord.image == null) {
-				ImageAsyncHelper imageAsyncHelper = new ImageAsyncHelper();
-				ord.image = imageAsyncHelper.getBitmap(ord.imageName,
-						new ImageAsyncHelperCallBack() {
-							ImageView imgView;
+			ImageAsyncHelper imageAsyncHelper = new ImageAsyncHelper();
+			holder.image.setImageBitmap(imageAsyncHelper.getBitmap(ord.imageName,
+					new ImageAsyncHelperCallBack() {
+				ImageView imgView;
 
-							public ImageAsyncHelperCallBack setImageView(
-									ImageView imgView) {
-								this.imgView = imgView;
-								return this;
-							}
+				public ImageAsyncHelperCallBack setImageView(
+						ImageView imgView) {
+					this.imgView = imgView;
+					return this;
+				}
 
-							@Override
-							public void onImageSyn(Bitmap img) {
-								imgView.setImageBitmap(img);
-							}
-						}.setImageView(holder.image), null);
-			}
-			holder.image.setImageBitmap(ord.image);
+				@Override
+				public void onImageSyn(Bitmap img) {
+					imgView.setImageBitmap(img);
+				}
+			}.setImageView(holder.image), null));
 
 			// holder.deleteButtom.setTag(position);
 
