@@ -15,7 +15,7 @@ public class ServinowApiImage extends ServinowApi {
 	private String imageNameAsJPG;
 
 	public ServinowApiImage(String imageNameAsJPG) {
-		super("/../img/"+imageNameAsJPG);
+		super("/images/"+imageNameAsJPG);
 
 		this.imageNameAsJPG = imageNameAsJPG;
 	}

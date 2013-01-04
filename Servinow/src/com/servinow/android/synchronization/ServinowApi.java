@@ -9,7 +9,7 @@ import java.net.URL;
 
 public abstract class ServinowApi {
 
-	protected final static String host = "http://travelme.bloodblog.net/servinow/api";
+	protected final static String host = "http://www.enjoyandtravel.com";
 	protected final static int readTimeout = 30000; //20 seconds.
 	protected final static int connectTimeout = 15000; //15 seconds.
 
