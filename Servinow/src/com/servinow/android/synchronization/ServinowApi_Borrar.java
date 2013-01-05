@@ -23,7 +23,7 @@ public class ServinowApi_Borrar extends ServinowApi {
     object.cantidad = cantidad;
     //Debug
     Log.d("GSON", new GsonBuilder().setPrettyPrinting().create().toJson(object));
-    payload = "DATA="+new Gson().toJson(object);
+    payload = new Gson().toJson(object);
   }
 
 }

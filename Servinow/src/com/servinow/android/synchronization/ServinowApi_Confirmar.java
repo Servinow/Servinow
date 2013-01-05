@@ -44,6 +44,6 @@ public class ServinowApi_Confirmar extends ServinowApi {
     PedidoBag object = new PedidoBag(pedido);
     //Debug
     Log.d("GSON", new GsonBuilder().setPrettyPrinting().create().toJson(object));
-    payload = "DATA="+new Gson().toJson(object);
+    payload = new Gson().toJson(object);
   }
 }

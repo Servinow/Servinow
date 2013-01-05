@@ -33,6 +33,7 @@ import com.servinow.android.R;
 import com.servinow.android.Util.ImageAsyncHelper;
 import com.servinow.android.Util.ImageAsyncHelper.ImageAsyncHelperCallBack;
 import com.servinow.android.dao.LineaPedidoCache;
+import com.servinow.android.dao.PedidoCache;
 import com.servinow.android.domain.Estado;
 import com.servinow.android.domain.LineaPedido;
 import com.servinow.android.domain.OrdersState;
@@ -79,7 +80,7 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
       public void run() {
         runNextTask();        
       }
-    }, 5, 3, TimeUnit.SECONDS);
+    }, 6, 5, TimeUnit.SECONDS);
 	}
 
 	@Override
@@ -251,12 +252,15 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
 	protected void runNextTask() {
 		// run my task.
 	  ArrayList<Integer> pedidos = new ArrayList<Integer>();
+	  PedidoCache pedidoCache = new PedidoCache(context);
 	  for(Iterator<OrdersState> it = orders.iterator(); it.hasNext();) {
-	    int pedidoId = it.next().pedidoId;
-	    if(!pedidos.contains(pedidoId))
-	      pedidos.add(pedidoId);
+	    OrdersState o = it.next();
+      if(!o.roundmark) {
+        int pedidoId = pedidoCache.getPedidoById(o.pedidoId).getOnlineID();
+        pedidos.add(pedidoId);
+      }
 	  }
-	  new CallForConsultar(context, orders.get(0).restaurantID, orders.get(0).mesa_id, pedidos, this).start();
+	  new CallForConsultar(context, orders.get(1).restaurantID, orders.get(1).mesa_id, pedidos, this).start();
 	}
 
 	public void setLineasCantidad() {

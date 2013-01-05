@@ -8,8 +8,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import org.apache.http.client.methods.HttpPost;
+
+import android.util.Log;
 
 public abstract class ServinowApi {
 
@@ -27,7 +30,7 @@ public abstract class ServinowApi {
 
 	protected InputStream doConnection() throws IOException{
 		InputStream is = null;
-		byte[] parameters = null;
+		String parameters = null;
 
 		URL url = new URL(api_url);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -35,16 +38,17 @@ public abstract class ServinowApi {
 		conn.setConnectTimeout(getConnectTimeout());
 		conn.setUseCaches(false);
 		if(payload != null) {
-		  parameters = payload.getBytes("utf-8");
+		  parameters = "DATA="+URLEncoder.encode(payload, "utf-8");
 		  conn.setDoInput(true);
 		  conn.setDoOutput(true);
 		  conn.setRequestMethod("POST");
-		  conn.setRequestProperty("Content-Type", "application/json");
+		  conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		  conn.setRequestProperty("charset", "utf-8");
-		  conn.setRequestProperty("Content-Length", "" + Integer.toString(parameters.length));
+		  conn.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
 		  DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-		  wr.write(parameters);
+		  wr.write(parameters.getBytes());
 		  wr.flush();
+		  wr.close();
 		} else {
 		  conn.connect();
 		}
@@ -56,6 +60,7 @@ public abstract class ServinowApi {
 
 	public String call() throws IOException{
 
+	  Log.d("ServinowApi", "Calling: "+api_url);
 		InputStream is = doConnection();
 
 		BufferedReader r = new BufferedReader(new InputStreamReader(is));

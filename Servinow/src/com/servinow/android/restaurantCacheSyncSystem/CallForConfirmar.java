@@ -34,6 +34,7 @@ public class CallForConfirmar {
       try {
         String result = confirmar.call();
         pedido.setOnlineID(Integer.parseInt(result));
+        Log.d("ServinowApi", "confirmar pedido, respuesta:"+result);
         new PedidoCache(context).updatePedido(pedido);
       }
       catch(IOException e) {

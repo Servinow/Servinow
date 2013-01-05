@@ -38,6 +38,7 @@ public class CallForBorrar {
       ServinowApi_Borrar borrar = new ServinowApi_Borrar(restaurantID, mesa_id, pedido_id_online, linea_pedido_local, 1);
       try {
         String result = borrar.call();
+        Log.d("ServinowApi", "Borrar, respuesta:"+result);
         if(Integer.parseInt(result)!=0) {
           if(cantidad <= 0)
             new LineaPedidoCache(context).deleteLineaPedido(linea_pedido_local);
