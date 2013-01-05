@@ -280,7 +280,13 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
         order.state = estado;
       }
     }
-    notifyDataSetChanged();
+    ((Activity) context).runOnUiThread(new Runnable() {
+      
+      @Override
+      public void run() {
+        notifyDataSetChanged();
+      }
+    });
   }
 
   public void stopScheduler() {

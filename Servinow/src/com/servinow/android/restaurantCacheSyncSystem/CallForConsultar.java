@@ -72,7 +72,7 @@ public class CallForConsultar {
             Estado prevEstado = lp.getEstado();
             if(estado.equalsIgnoreCase("COLA"))
               lp.setEstado(Estado.EN_COLA);
-            else if(estado.equalsIgnoreCase("PREPARANDOSE"))
+            else if(estado.equalsIgnoreCase("PREPARANDOSE") || estado.equalsIgnoreCase("COCINANDOSE"))
               lp.setEstado(Estado.PREPARANDO);
             else if(estado.equalsIgnoreCase("PREPARADO") || estado.equalsIgnoreCase("TRANSITO")) 
               lp.setEstado(Estado.LISTO);
@@ -80,6 +80,7 @@ public class CallForConsultar {
               lp.setEstado(Estado.SERVIDO);
             lpCache.update(lp);
             if(prevEstado!=lp.getEstado()) {
+              Log.d("EstadoPedidos", "Pedido actualizado: "+lp.getId()+"("+lp.getProducto().getNombre()+") de "+prevEstado.toString()+" a "+lp.getEstado().toString());
               checkStateArrayAdapter.updateOrder(lp.getId(), lp.getEstado());
             }
           }
