@@ -99,4 +99,12 @@ public class LineaPedidoCache extends ServinowDAOBase<LineaPedido, Integer> {
 		
 		return lineaPedidoList;
 	}
+	
+	public LineaPedido getLineaPedidoById(int id) {
+	  return getDAO().queryForId(id);
+	}
+
+  public void update(LineaPedido lp) {
+    getDAO().update(lp);
+  }
 }

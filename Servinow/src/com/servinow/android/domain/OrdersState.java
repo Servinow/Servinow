@@ -11,8 +11,10 @@ public class OrdersState {
 	public int lineaPedidoId;
 	public int productoId;
 	public int pedidoId;
+	public int mesa_id;
 	public int cantidad=0;
 	public String imageName;
 	public Boolean pagado=false;
 	public LineaPedido lp;
+  public int restaurantID;
 }

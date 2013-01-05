@@ -1,5 +1,7 @@
 package com.servinow.android;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import com.servinow.android.domain.Restaurant;
 import com.servinow.android.payment.IPaymentCallback;
 import com.servinow.android.payment.Payment;
 import com.servinow.android.payment.Payment.Method;
+import com.servinow.android.restaurantCacheSyncSystem.CallForPagar;
 import com.servinow.android.widget.PurchasedItemAdapter;
 
 import android.content.Intent;
@@ -110,6 +113,12 @@ public class TicketActivity extends SherlockFragmentActivity implements IPayment
 	
 	@Override
 	public void onPaymentSuccesful(Method method) {
+	  ArrayList<Integer> pedidosPagados = new ArrayList<Integer>();
+	  for(Iterator<Pedido> it = pedidos.iterator(); it.hasNext();) {
+	    Pedido p = it.next();
+	    pedidosPagados.add(p.getOnlineID());
+	  }
+	  new CallForPagar(this, restaurantID, pedidos.get(0).getPlace().getOnlineID(), method.toString().toLowerCase(), pedidosPagados).start();
 		switch(method){
 		case NORMAL:
 			break;

@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -212,6 +213,7 @@ public class Payment {
 		
 		protected void onPostExecute(Void a) {
 			iPaymentActivity.onPaymentProcess(paymentMethod);
+			iPaymentActivity.onPaymentSuccesful(paymentMethod);
 		}
 	}
 	

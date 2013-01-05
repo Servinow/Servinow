@@ -1,17 +1,23 @@
 package com.servinow.android.synchronization;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.apache.http.client.methods.HttpPost;
 
 public abstract class ServinowApi {
 
 	protected final static String host = "http://www.enjoyandtravel.com";
 	protected final static int readTimeout = 30000; //20 seconds.
 	protected final static int connectTimeout = 15000; //15 seconds.
+	
+	protected String payload = null;
 
 	protected String api_url;
 
@@ -21,16 +27,30 @@ public abstract class ServinowApi {
 
 	protected InputStream doConnection() throws IOException{
 		InputStream is = null;
+		byte[] parameters = null;
 
 		URL url = new URL(api_url);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setReadTimeout(getReadTimeout());
 		conn.setConnectTimeout(getConnectTimeout());
-
-		conn.connect();
-
+		conn.setUseCaches(false);
+		if(payload != null) {
+		  parameters = payload.getBytes("utf-8");
+		  conn.setDoInput(true);
+		  conn.setDoOutput(true);
+		  conn.setRequestMethod("POST");
+		  conn.setRequestProperty("Content-Type", "application/json");
+		  conn.setRequestProperty("charset", "utf-8");
+		  conn.setRequestProperty("Content-Length", "" + Integer.toString(parameters.length));
+		  DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+		  wr.write(parameters);
+		  wr.flush();
+		} else {
+		  conn.connect();
+		}
+		
 		is = conn.getInputStream();
-
+		
 		return is;
 	}
 

@@ -32,6 +32,7 @@ import com.servinow.android.domain.Pedido;
 
 import com.servinow.android.pedidosSystem.PedidosHandler;
 import com.servinow.android.picker.NumberPicker;
+import com.servinow.android.restaurantCacheSyncSystem.CallForConfirmar;
 
 public class ListaPedidoActivity extends SherlockListActivity {
 
@@ -336,12 +337,15 @@ public class ListaPedidoActivity extends SherlockListActivity {
 	    	     
 
 	    		public void onClick(DialogInterface dialog, int id) {
+	    		  
+	    		  new CallForConfirmar(ListaPedidoActivity.this, pedido, restaurantID).start();
 	    			// Marcar pedido como confirmado
 	    			ListaPedidoActivity.this.pedido.setConfirmado(true);
 	    			new PedidoCache(ListaPedidoActivity.this).updatePedido(pedido);
 
 	    			// TODO INTENT A LA ACTIVIDAD DE CheckStateActivity.class
 	    			// SOLO HAY QUE CAMBIAR MainActivity por CheckStateActivity
+	    			
 	    			Intent myIntent = new Intent(ListaPedidoActivity.this, CheckOrderStateActivity.class);
 	    			Bundle b = new Bundle();
 	    			b.putInt(Param.RESTAURANT.toString(), restaurantID);

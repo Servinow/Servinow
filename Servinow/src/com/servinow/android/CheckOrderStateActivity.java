@@ -81,6 +81,11 @@ public class CheckOrderStateActivity extends SherlockActivity {
         
     //    setTimer(1000);
     }
+    @Override
+    protected void onDestroy() {
+      super.onDestroy();
+      adapter.stopScheduler();
+    }
 
     public void createListView(Context ctx){
     	
@@ -158,6 +163,8 @@ public class CheckOrderStateActivity extends SherlockActivity {
     				ordp.imageName = lp.getProducto().getImageName();
     				ordp.image = null;
     				ordp.lp = lp;
+    				ordp.mesa_id = listaPedidos.get(i).getPlace().getOnlineID();
+    				ordp.restaurantID = restaurantID;
     				
     				ordersToDisplay.add(ordp);
     				countOrders++;
@@ -191,7 +198,7 @@ public class CheckOrderStateActivity extends SherlockActivity {
     	while(ordersToDisplay.get(nOrder).roundmark==true)
     		nOrder = (int)(Math.random()*countOrders);
     	
-    	if(ordersToDisplay.get(nOrder).state == Estado.EN_COLA){
+    	/*if(ordersToDisplay.get(nOrder).state == Estado.EN_COLA){
     		ordersToDisplay.get(nOrder).state=Estado.PREPARANDO;
     		countChanges--;
     	}else if(ordersToDisplay.get(nOrder).state == Estado.PREPARANDO){
@@ -200,7 +207,7 @@ public class CheckOrderStateActivity extends SherlockActivity {
     	}else if(ordersToDisplay.get(nOrder).state == Estado.LISTO){
     		ordersToDisplay.get(nOrder).state=Estado.SERVIDO;
     		countChanges--;
-    	}
+    	}*/
     	adapter.notifyDataSetChanged();
     	if(countChanges<=0)
     		flagTimer=true;

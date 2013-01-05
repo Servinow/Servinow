@@ -18,9 +18,9 @@ public class Pedido {
 	private int id; //localID
 	
 	@DatabaseField(canBeNull = true)
-	private Integer onlineID;
-	
-	@DatabaseField(canBeNull = false)
+  private Integer onlineID;
+
+  @DatabaseField(canBeNull = false)
 	private Date fecha;
 	
 	@DatabaseField(canBeNull = false, defaultValue="false")
@@ -119,4 +119,18 @@ public class Pedido {
 
 		return total;
 	}
+	 
+  /**
+   * @return the onlineID
+   */
+  public Integer getOnlineID() {
+    return onlineID;
+  }
+
+  /**
+   * @param onlineID the onlineID to set
+   */
+  public void setOnlineID(Integer onlineID) {
+    this.onlineID = onlineID;
+  }
 }
