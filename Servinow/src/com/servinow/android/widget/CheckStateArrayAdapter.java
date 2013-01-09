@@ -178,7 +178,7 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
 					});
 
 		} else {
-		  StringBuilder header = new StringBuilder(" - Ronda " + ord.round + " - ");
+		  StringBuilder header = new StringBuilder(" - Ronda " + ord.round + " -");
 		  if (ord.pagado) {
 		    header.append(context.getResources().getString(R.string.checkstate_pagado));
 	    }

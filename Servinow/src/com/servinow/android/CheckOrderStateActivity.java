@@ -129,22 +129,12 @@ public class CheckOrderStateActivity extends SherlockActivity {
  
     
     public void prepareToDisplay(){
-    	
-    	Boolean pagado=false;
-    	
+    	    	
     	for(int i=listaPedidos.size()-1; i>=0; i--){
-    		if(!pagado){
-    			if(listaPedidos.get(i).isPagado()){
-    				OrdersState ordpd= new OrdersState();
-    				ordpd.round=listaPedidos.get(i).getId();
-    				ordpd.pagado=true;
-    				ordersToDisplay.add(ordpd);
-    				pagado=true;
-    			}
-    		}
     		OrdersState ord= new OrdersState();
     		ord.round=listaPedidos.get(i).getId();
     		ord.roundmark=true;
+    		ord.pagado=listaPedidos.get(i).isPagado();
     		ordersToDisplay.add(ord);
     		countOrders++;
     		Iterator<LineaPedido> itr = listaPedidos.get(i).getLineas().iterator();
