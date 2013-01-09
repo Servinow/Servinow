@@ -127,9 +127,7 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
 			holder = (ViewHolder) rowView.getTag();
 		}
 
-		if (ord.pagado) {
-			holder.ronda.setText(R.string.checkstate_pagado);
-		} else if (!ord.roundmark) {
+		if (!ord.roundmark) {
 			
 			holder.name.setText(ord.name);
 			if (ord.state == Estado.EN_COLA) {
@@ -180,7 +178,11 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
 					});
 
 		} else {
-			holder.ronda.setText(" - Ronda " + ord.round + " - ");
+		  StringBuilder header = new StringBuilder(" - Ronda " + ord.round + " - ");
+		  if (ord.pagado) {
+		    header.append(context.getResources().getString(R.string.checkstate_pagado));
+	    }
+			holder.ronda.setText(header);
 		}
 
 		return rowView;
