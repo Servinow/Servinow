@@ -21,6 +21,7 @@ import com.servinow.android.payment.IPaymentCallback;
 import com.servinow.android.payment.Payment;
 import com.servinow.android.payment.Payment.Method;
 import com.servinow.android.restaurantCacheSyncSystem.CallForPagar;
+import com.servinow.android.synchronization.ServinowApi_Pagar;
 import com.servinow.android.widget.PurchasedItemAdapter;
 
 import android.content.Intent;
@@ -38,6 +39,7 @@ public class TicketActivity extends SherlockFragmentActivity implements IPayment
 	private  List<Pedido> pedidos;
 	private Menu menuActionBar;
 	private Payment payment;
+	private int placeID;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class TicketActivity extends SherlockFragmentActivity implements IPayment
 
 		//	restaurantID = parameters.getInt("restaurantID");
 			restaurantID = parameters.getInt(Param.RESTAURANT.toString());
+			placeID = parameters.getInt(Param.PLACE.toString());
 			Log.d("restaurantID: ",""+restaurantID+"---3---");
 			pedidos = new PedidoCache(this).getPedidosNoPagados(restaurantID);
 			restaurant = new RestaurantCache(this).getRestaurantFromCache(restaurantID);
@@ -122,7 +125,8 @@ public class TicketActivity extends SherlockFragmentActivity implements IPayment
 		switch(method){
 		case NORMAL:
 			break;
-		case PAYPAL:			
+		case PAYPAL:
+			new ServinowApi_Pagar(restaurantID, placeID, "paypal", pedidosPagados);
 			finish();
 			break;
 		}
