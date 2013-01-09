@@ -75,7 +75,7 @@ public class CheckOrderStateActivity extends SherlockActivity {
     	}
         
         setContentView(R.layout.activity_check_state); 
-        setTitle("Servinow");
+        setTitle("Estado del pedido");
         
         createListView(this);
         
