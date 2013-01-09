@@ -245,8 +245,8 @@ public class CheckStateArrayAdapter extends ArrayAdapter<OrdersState> {
 //			lpCach.deleteLineaPedido(ord.lp.getId());
 //		else
 //			lpCach.updateQuantityLineaPedido(ord.lp.getId(), cantidad - 1);
-	  
-	  new CallForBorrar(context, ord.restaurantID, ord.mesa_id, ord.pedidoId, ord.lineaPedidoId, cantidad-1).start();
+	  int pedidoId = new PedidoCache(context).getPedidoById(ord.pedidoId).getOnlineID();
+	  new CallForBorrar(context, ord.restaurantID, ord.mesa_id, pedidoId, ord.lineaPedidoId, cantidad-1).start();
 			
 		return true;
 	}
